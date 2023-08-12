@@ -1,0 +1,7 @@
+VERSION:3 SOURCE_TIMESTAMP:570C6D8F
+NODE:I LEVEL:0 LINE:24 "C:\cvavr\inc\mega32a.h"
+NODE:I LEVEL:0 LINE:25 "C:\cvavr\inc\delay.h"
+NODE:V LEVEL:0 LINE:29 "tot_overflow -> R4,R5"
+NODE:F LEVEL:0 LINE:32 "timer0_ovf_isr(void)"
+NODE:F LEVEL:0 LINE:56 "timer0_init(void)"
+NODE:F LEVEL:0 LINE:65 "main(void)"
