@@ -75,12 +75,6 @@ void timer0_init(long int mcu_clock,int prescaler, int req_delay)
             break;
     }
 
-/*
-    TCCR0 |= (1<<CS02);
-    TCNT0=0x00;
-    TIMSK |= (1<<TOIE0);
-    counter_overflow = 0; 
-*/
 
     timer_clock = mcu_clock/prescaler;
     counting_time = 1000.0/timer_clock;
