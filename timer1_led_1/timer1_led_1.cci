@@ -1,0 +1,8 @@
+VERSION:3 SOURCE_TIMESTAMP:570C5D81
+NODE:I LEVEL:0 LINE:24 "C:\cvavr\inc\mega32a.h"
+NODE:I LEVEL:0 LINE:25 "C:\cvavr\inc\delay.h"
+NODE:V LEVEL:0 LINE:28 "tot_overflow -> RAM:????"
+NODE:V LEVEL:0 LINE:29 "remainder_time -> RAM:????"
+NODE:F LEVEL:0 LINE:33 "timer1_ovf_isr(void)"
+NODE:F LEVEL:0 LINE:45 "timer1_init(float mcu_clock,int prescaler,int req_delay)"
+NODE:F LEVEL:0 LINE:72 "main(void)"

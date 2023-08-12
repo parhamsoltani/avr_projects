@@ -1,0 +1,3 @@
+main DSTACK_USAGE:4 DSTACK_LEVEL:4 FILE:"timer1_led_1.c" LINE:72
+timer1_init DSTACK_USAGE:24 DSTACK_LEVEL:28 FILE:"timer1_led_1.c" LINE:45
+timer1_ovf_isr DSTACK_USAGE:4 DSTACK_LEVEL:32 FILE:"timer1_led_1.c" LINE:33
