@@ -4,7 +4,7 @@
 unsigned int tot_overflow;
 unsigned int remainder_time;
 
-void reg_initializer_16(float mcu_clock,int prescaler, int req_delay)
+void reg_initializer_16(long int mcu_clock,int prescaler, int req_delay)
 {
     long int timer_clock = mcu_clock/prescaler;
     float counting_time = 1000.0/timer_clock;
@@ -76,7 +76,7 @@ void reg_initializer_16(float mcu_clock,int prescaler, int req_delay)
 int main() {
     int prescaler = 256;
     int req_delay = 1000;
-    float mcu_clock = 8000000.0;
+    long int mcu_clock = 8000000;
 
     reg_initializer_16(mcu_clock, prescaler, req_delay);
 
