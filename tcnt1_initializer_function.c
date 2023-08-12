@@ -12,7 +12,7 @@ void reg_initializer_16(float mcu_clock,int prescaler, int req_delay)
 
     int x = req_delay/counting_time;
 
-    unsigned int y = 0;
+
     if (x > 65535)
     {
         tot_overflow += (x/65535);
