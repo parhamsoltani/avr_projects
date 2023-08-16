@@ -1,0 +1,6 @@
+VERSION:3 SOURCE_TIMESTAMP:5710794E
+NODE:I LEVEL:0 LINE:24 "C:\cvavr\inc\mega32a.h"
+NODE:I LEVEL:0 LINE:27 "C:\cvavr\inc\alcd.h"
+NODE:V LEVEL:0 LINE:31 "Buffer_LCD -> RAM:????"
+NODE:I LEVEL:0 LINE:34 "C:\cvavr\inc\stdio.h"
+NODE:F LEVEL:0 LINE:38 "main(void)"

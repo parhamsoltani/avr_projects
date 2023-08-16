@@ -1,0 +1,150 @@
+;/*******************************************************
+;This program was created by the
+;CodeWizardAVR V3.14 Advanced
+;Automatic Program Generator
+;© Copyright 1998-2014 Pavel Haiduc, HP InfoTech s.r.l.
+;http://www.hpinfotech.com
+;
+;Project :
+;Version :
+;Date    : 8/15/2023
+;Author  :
+;Company :
+;Comments:
+;
+;
+;Chip type               : ATmega32A
+;Program type            : Application
+;AVR Core Clock frequency: 8.000000 MHz
+;Memory model            : Small
+;External RAM size       : 0
+;Data Stack size         : 512
+;*******************************************************/
+;
+;#include <mega32a.h>
+;PCODE: $00000000 VOL: 0
+	#ifndef __SLEEP_DEFINED__
+;PCODE: $00000001 VOL: 0
+	#define __SLEEP_DEFINED__
+;PCODE: $00000002 VOL: 0
+	.EQU __se_bit=0x80
+;PCODE: $00000003 VOL: 0
+	.EQU __sm_mask=0x70
+;PCODE: $00000004 VOL: 0
+	.EQU __sm_powerdown=0x20
+;PCODE: $00000005 VOL: 0
+	.EQU __sm_powersave=0x30
+;PCODE: $00000006 VOL: 0
+	.EQU __sm_standby=0x60
+;PCODE: $00000007 VOL: 0
+	.EQU __sm_ext_standby=0x70
+;PCODE: $00000008 VOL: 0
+	.EQU __sm_adc_noise_red=0x10
+;PCODE: $00000009 VOL: 0
+	.SET power_ctrl_reg=mcucr
+;PCODE: $0000000A VOL: 0
+	#endif
+;PCODE: $0000000B VOL: 0
+;PCODE: $0000000C VOL: 0
+;#include <stdio.h>
+;#include <delay.h>
+;
+;// 1 Wire Bus interface functions
+;#include <1wire.h>
+;
+;// DS1820 Temperature Sensor functions
+;#include <ds18b20.h>
+;
+;// Alphanumeric LCD functions
+;#include <alcd.h>
+;
+;// Declare your global variables here
+;
+;void main(void)
+; 0000 0028 {
+
+	.CSEG
+;PCODE: $0000000D VOL: 0
+; 0000 0029 // Declare your local variables here
+; 0000 002A 
+; 0000 002B float   Temperature=0 ;
+; 0000 002C char    Buffer_LCD[16];
+; 0000 002D 
+; 0000 002E // 1 Wire Bus initialization
+; 0000 002F // 1 Wire Data port: PORTB
+; 0000 0030 // 1 Wire Data bit: 0
+; 0000 0031 // Note: 1 Wire port settings are specified in the
+; 0000 0032 // Project|Configure|C Compiler|Libraries|1 Wire menu.
+; 0000 0033 w1_init();
+;PCODE: $0000000E VOL: 0
+;PCODE: $0000000F VOL: 0
+;PCODE: $00000010 VOL: 0
+;PCODE: $00000011 VOL: 0
+;PCODE: $00000012 VOL: 0
+;PCODE: $00000013 VOL: 0
+;PCODE: $00000014 VOL: 0
+;PCODE: $00000015 VOL: 0
+;PCODE: $00000016 VOL: 0
+;	Temperature -> Y+16
+;	Buffer_LCD -> Y+0
+;PCODE: $00000017 VOL: 0
+; 0000 0034 
+; 0000 0035 // Alphanumeric LCD initialization
+; 0000 0036 // Connections are specified in the
+; 0000 0037 // Project|Configure|C Compiler|Libraries|Alphanumeric LCD menu:
+; 0000 0038 // RS - PORTC Bit 0
+; 0000 0039 // RD - PORTC Bit 1
+; 0000 003A // EN - PORTC Bit 2
+; 0000 003B // D4 - PORTC Bit 4
+; 0000 003C // D5 - PORTC Bit 5
+; 0000 003D // D6 - PORTC Bit 6
+; 0000 003E // D7 - PORTC Bit 7
+; 0000 003F // Characters/line: 16
+; 0000 0040 lcd_init(16);
+;PCODE: $00000018 VOL: 0
+;PCODE: $00000019 VOL: 0
+; 0000 0041 lcd_clear();
+;PCODE: $0000001A VOL: 0
+; 0000 0042 
+; 0000 0043 while (1)
+;PCODE: $0000001B VOL: 0
+; 0000 0044       {
+; 0000 0045       // Place your code here
+; 0000 0046 
+; 0000 0047       Temperature = ds18b20_temperature(0);
+;PCODE: $0000001C VOL: 0
+;PCODE: $0000001D VOL: 0
+;PCODE: $0000001E VOL: 0
+;PCODE: $0000001F VOL: 0
+; 0000 0048       sprintf(Buffer_LCD,"Temp:%4.2f",Temperature);
+;PCODE: $00000020 VOL: 0
+;PCODE: $00000021 VOL: 0
+;PCODE: $00000022 VOL: 0
+;PCODE: $00000023 VOL: 0
+;PCODE: $00000024 VOL: 0
+;PCODE: $00000025 VOL: 0
+;PCODE: $00000026 VOL: 0
+;PCODE: $00000027 VOL: 0
+;PCODE: $00000028 VOL: 0
+;PCODE: $00000029 VOL: 0
+;PCODE: $0000002A VOL: 0
+; 0000 0049       lcd_gotoxy(0,0);
+;PCODE: $0000002B VOL: 0
+;PCODE: $0000002C VOL: 0
+;PCODE: $0000002D VOL: 0
+;PCODE: $0000002E VOL: 0
+; 0000 004A       lcd_puts(Buffer_LCD);
+;PCODE: $0000002F VOL: 0
+;PCODE: $00000030 VOL: 0
+; 0000 004B       delay_ms(300);
+;PCODE: $00000031 VOL: 0
+;PCODE: $00000032 VOL: 0
+; 0000 004C 
+; 0000 004D       }
+;PCODE: $00000033 VOL: 0
+;PCODE: $00000034 VOL: 0
+; 0000 004E }
+;PCODE: $00000035 VOL: 0
+;PCODE: $00000036 VOL: 0
+;PCODE: $00000037 VOL: 0
+;PCODE: $00000038 VOL: 0

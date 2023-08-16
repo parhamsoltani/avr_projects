@@ -1,0 +1,228 @@
+;/*******************************************************
+;This program was created by the
+;CodeWizardAVR V3.14 Advanced
+;Automatic Program Generator
+;© Copyright 1998-2014 Pavel Haiduc, HP InfoTech s.r.l.
+;http://www.hpinfotech.com
+;
+;Project :  Multiple DS18B20 sensors with USART (Transmitter)
+;Version :
+;Date    : 8/16/2023
+;Author  : Parham Soltani
+;Company :
+;Comments:
+;
+;
+;Chip type               : ATmega32A
+;Program type            : Application
+;AVR Core Clock frequency: 8.000000 MHz
+;Memory model            : Small
+;External RAM size       : 0
+;Data Stack size         : 512
+;*******************************************************/
+;
+;#include <mega32a.h>
+;PCODE: $00000000 VOL: 0
+	#ifndef __SLEEP_DEFINED__
+;PCODE: $00000001 VOL: 0
+	#define __SLEEP_DEFINED__
+;PCODE: $00000002 VOL: 0
+	.EQU __se_bit=0x80
+;PCODE: $00000003 VOL: 0
+	.EQU __sm_mask=0x70
+;PCODE: $00000004 VOL: 0
+	.EQU __sm_powerdown=0x20
+;PCODE: $00000005 VOL: 0
+	.EQU __sm_powersave=0x30
+;PCODE: $00000006 VOL: 0
+	.EQU __sm_standby=0x60
+;PCODE: $00000007 VOL: 0
+	.EQU __sm_ext_standby=0x70
+;PCODE: $00000008 VOL: 0
+	.EQU __sm_adc_noise_red=0x10
+;PCODE: $00000009 VOL: 0
+	.SET power_ctrl_reg=mcucr
+;PCODE: $0000000A VOL: 0
+	#endif
+;PCODE: $0000000B VOL: 0
+;PCODE: $0000000C VOL: 0
+;#include <delay.h>
+;
+;// 1 Wire Bus interface functions
+;#include <1wire.h>
+;
+;// DS1820 Temperature Sensor functions
+;#include <ds18B20.h>
+;
+;// maximum number of DS1820 devices
+;// connected to the 1 Wire bus
+;#define MAX_DS1820 8
+;// number of DS1820 devices
+;// connected to the 1 Wire bus
+;unsigned char ds18b20_devices;
+;// DS1820 devices ROM code storage area,
+;// 9 bytes are used for each device
+;// (see the w1_search function description in the help)
+;unsigned char ds1820_rom_codes[MAX_DS1820][9];
+;
+;// Declare your global variables here
+;
+;float Temperature[8]={0,0,0,0,0,0,0,0};  //temperature for each sensor is stored here
+;char  Buffer_LCD[16];
+;unsigned char i;
+;
+;// Standard Input/Output functions
+;#include <stdio.h>
+;
+;
+;void usart_init(void)
+; 0000 0037 {
+
+	.CSEG
+;PCODE: $0000000D VOL: 0
+;PCODE: $0000000E VOL: 0
+; 0000 0038     // USART initialization
+; 0000 0039     // Communication Parameters: 8 Data, 1 Stop, No Parity
+; 0000 003A     // USART Receiver: Off
+; 0000 003B     // USART Transmitter: On
+; 0000 003C     // USART Mode: Asynchronous
+; 0000 003D     // USART Baud Rate: 9600
+; 0000 003E     UCSRA=0;
+;PCODE: $0000000F VOL: 0
+;PCODE: $00000010 VOL: 0
+; 0000 003F     UCSRB=(1<<TXEN);
+;PCODE: $00000011 VOL: 0
+;PCODE: $00000012 VOL: 0
+; 0000 0040     UCSRC=(1<<URSEL) | (1<<UCSZ1) | (1<<UCSZ0);
+;PCODE: $00000013 VOL: 0
+;PCODE: $00000014 VOL: 0
+; 0000 0041     UBRRH=0x00;
+;PCODE: $00000015 VOL: 0
+;PCODE: $00000016 VOL: 0
+; 0000 0042     UBRRL=0x33;
+;PCODE: $00000017 VOL: 0
+;PCODE: $00000018 VOL: 0
+; 0000 0043 }
+;PCODE: $00000019 VOL: 0
+;PCODE: $0000001A VOL: 0
+;
+;
+;void main(void)
+; 0000 0047 {
+;PCODE: $0000001B VOL: 0
+; 0000 0048 // Declare your local variables here
+; 0000 0049 
+; 0000 004A // Input/Output Ports initialization
+; 0000 004B // Port B initialization
+; 0000 004C // Function: Bit1=In
+; 0000 004D DDRB= (0<<DDB1);
+;PCODE: $0000001C VOL: 0
+;PCODE: $0000001D VOL: 0
+; 0000 004E // State: Bit1=T
+; 0000 004F PORTB=(1<<PORTB1);  //internal pull-up is enabled.
+;PCODE: $0000001E VOL: 0
+;PCODE: $0000001F VOL: 0
+; 0000 0050 
+; 0000 0051 
+; 0000 0052 // 1 Wire Bus initialization
+; 0000 0053 // 1 Wire Data port: PORTB
+; 0000 0054 // 1 Wire Data bit: 0
+; 0000 0055 // Note: 1 Wire port settings are specified in the
+; 0000 0056 // Project|Configure|C Compiler|Libraries|1 Wire menu.
+; 0000 0057 w1_init();
+;PCODE: $00000020 VOL: 0
+; 0000 0058 
+; 0000 0059 // Determine the number of DS1820 devices
+; 0000 005A // connected to the 1 Wire bus
+; 0000 005B ds18b20_devices=w1_search(0xf0,ds1820_rom_codes);
+;PCODE: $00000021 VOL: 0
+;PCODE: $00000022 VOL: 0
+;PCODE: $00000023 VOL: 0
+;PCODE: $00000024 VOL: 0
+;PCODE: $00000025 VOL: 0
+; 0000 005C 
+; 0000 005D usart_init();
+;PCODE: $00000026 VOL: 0
+; 0000 005E while (1)
+;PCODE: $00000027 VOL: 0
+; 0000 005F       {
+; 0000 0060       // Place your code here
+; 0000 0061       if(PINB.1 == 0)
+;PCODE: $00000028 VOL: 0
+;PCODE: $00000029 VOL: 0
+;PCODE: $0000002A VOL: 0
+; 0000 0062       {
+; 0000 0063 
+; 0000 0064         Temperature[i] = ds18b20_temperature(ds1820_rom_codes[i]);
+;PCODE: $0000002B VOL: 0
+;PCODE: $0000002C VOL: 0
+;PCODE: $0000002D VOL: 0
+;PCODE: $0000002E VOL: 0
+;PCODE: $0000002F VOL: 0
+;PCODE: $00000030 VOL: 0
+;PCODE: $00000031 VOL: 0
+;PCODE: $00000032 VOL: 0
+;PCODE: $00000033 VOL: 0
+;PCODE: $00000034 VOL: 0
+;PCODE: $00000035 VOL: 0
+;PCODE: $00000036 VOL: 0
+;PCODE: $00000037 VOL: 0
+;PCODE: $00000038 VOL: 0
+; 0000 0065         sprintf(Buffer_LCD,"T%01d=%4.2f",i+1,Temperature[i]);
+;PCODE: $00000039 VOL: 0
+;PCODE: $0000003A VOL: 0
+;PCODE: $0000003B VOL: 0
+;PCODE: $0000003C VOL: 0
+;PCODE: $0000003D VOL: 0
+;PCODE: $0000003E VOL: 0
+;PCODE: $0000003F VOL: 0
+;PCODE: $00000040 VOL: 0
+;PCODE: $00000041 VOL: 0
+;PCODE: $00000042 VOL: 0
+;PCODE: $00000043 VOL: 0
+;PCODE: $00000044 VOL: 0
+;PCODE: $00000045 VOL: 0
+;PCODE: $00000046 VOL: 0
+;PCODE: $00000047 VOL: 0
+;PCODE: $00000048 VOL: 0
+;PCODE: $00000049 VOL: 0
+;PCODE: $0000004A VOL: 0
+;PCODE: $0000004B VOL: 0
+;PCODE: $0000004C VOL: 0
+;PCODE: $0000004D VOL: 0
+; 0000 0066         puts(Buffer_LCD);
+;PCODE: $0000004E VOL: 0
+;PCODE: $0000004F VOL: 0
+; 0000 0067         delay_ms(250);
+;PCODE: $00000050 VOL: 0
+;PCODE: $00000051 VOL: 0
+;PCODE: $00000052 VOL: 0
+; 0000 0068         if(i<7) i++;
+;PCODE: $00000053 VOL: 0
+;PCODE: $00000054 VOL: 0
+;PCODE: $00000055 VOL: 0
+;PCODE: $00000056 VOL: 0
+; 0000 0069         else if(i==7) i=0;
+;PCODE: $00000057 VOL: 0
+;PCODE: $00000058 VOL: 0
+;PCODE: $00000059 VOL: 0
+;PCODE: $0000005A VOL: 0
+;PCODE: $0000005B VOL: 0
+;PCODE: $0000005C VOL: 0
+; 0000 006A       }
+;PCODE: $0000005D VOL: 0
+;PCODE: $0000005E VOL: 0
+; 0000 006B 
+; 0000 006C 
+; 0000 006D       }
+;PCODE: $0000005F VOL: 0
+;PCODE: $00000060 VOL: 0
+;PCODE: $00000061 VOL: 0
+; 0000 006E }
+;PCODE: $00000062 VOL: 0
+;PCODE: $00000063 VOL: 0
+;PCODE: $00000064 VOL: 0
+;
+;
+;
+;

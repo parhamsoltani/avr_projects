@@ -1,0 +1,33 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+__ds18b20_scratch_pad                                                             0x0260       9
+_seed                                                                             0x0269       4
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+main                                                                              0x0006F     56
+ds18b20_select                                                                    0x000A7     34
+ds18b20_read_spd                                                                  0x000C9     42
+ds18b20_temperature                                                               0x000F3     76
+putchar                                                                           0x0013F      7
+puts                                                                              0x00146     19
+put_buff_G101                                                                     0x00159     58
+_ftoe_G101                                                                        0x00193    210
+_print_G101                                                                       0x00265    538
+sprintf                                                                           0x0047F     52
+strcpyf                                                                           0x004B3     13
+strlen                                                                            0x004C0     12
+strlenf                                                                           0x004CC     13
+ftrunc                                                                            0x004D9     49
+floor                                                                             0x0050A     23
+ftoa                                                                              0x00521    155

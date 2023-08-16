@@ -1,0 +1,42 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+__ds18b20_scratch_pad                                                             0x0260       9
+_base_y                                                                           0x0269       4
+_seed                                                                             0x026D       4
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+_lcd_x                                                                            R5           1
+_lcd_y                                                                            R4           1
+_lcd_maxx                                                                         R7           1
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+main                                                                              0x00075     50
+put_buff_G100                                                                     0x000A7     58
+_ftoe_G100                                                                        0x000E1    210
+_print_G100                                                                       0x001B3    538
+sprintf                                                                           0x003CD     52
+ds18b20_select                                                                    0x00401     34
+ds18b20_read_spd                                                                  0x00423     42
+ds18b20_temperature                                                               0x0044D     76
+_lcd_write_nibble_G102                                                            0x00499     20
+_lcd_write_data                                                                   0x004AD     12
+lcd_gotoxy                                                                        0x004B9     13
+lcd_clear                                                                         0x004C6     12
+lcd_putchar                                                                       0x004D2     21
+lcd_puts                                                                          0x004E7     17
+lcd_init                                                                          0x004F8     46
+strcpyf                                                                           0x00526     13
+strlen                                                                            0x00533     12
+strlenf                                                                           0x0053F     13
+ftrunc                                                                            0x0054C     49
+floor                                                                             0x0057D     23
+ftoa                                                                              0x00594    155
