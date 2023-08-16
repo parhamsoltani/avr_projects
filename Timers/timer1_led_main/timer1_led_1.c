@@ -2,7 +2,7 @@
 This program was created by the
 CodeWizardAVR V3.14 Advanced
 Automatic Program Generator
-© Copyright 1998-2014 Pavel Haiduc, HP InfoTech s.r.l.
+Â© Copyright 1998-2014 Pavel Haiduc, HP InfoTech s.r.l.
 http://www.hpinfotech.com
 
 Project : 
@@ -32,17 +32,17 @@ volatile unsigned int remainder_time;
 // Timer1 overflow interrupt service routine
 interrupt [TIM1_OVF] void timer1_ovf_isr(void)
 {
-  
-      PORTC ^= (1<<0); 
-      TCNT1 = remainder_time;
 
+      PORTC ^= (1<<0); 
+      TCNT1 = remainder_time;  
+      
 }
 
 //timer1's possible values for prescaler:8, 64, 256, 1024
 //required delay is in ms
 //suppose that the MCU's clock is 8MHz
 
-void timer1_init(float mcu_clock,int prescaler, int req_delay)
+void timer1_init(long int mcu_clock,int prescaler, float req_delay)
 {
     long int timer_clock = mcu_clock/prescaler;
     float counting_time = 1000.0/timer_clock;
@@ -59,12 +59,57 @@ void timer1_init(float mcu_clock,int prescaler, int req_delay)
     {
         remainder_time = 65535 - x;
     }
-    
-    TCCR1B |= (1 << CS12);
-    TCNT1 = remainder_time;
-    TIMSK |= (1 << TOIE1);
-}
 
+
+    switch (prescaler)
+    {
+        case 1: // No prescaling
+            TCCR1B |= (1<<CS00);
+            TCCR1B |= (0<<CS01);
+            TCCR1B |= (0<<CS02);
+            TCNT1 = remainder_time;
+            TIMSK |= (1<<TOIE1);
+            break;
+
+        case 8: // Prescaler 8
+            TCCR1B |= (0<<CS00);
+            TCCR1B |= (1<<CS01);
+            TCCR1B |= (0<<CS02);
+            TCNT1 = remainder_time;
+            TIMSK |= (1<<TOIE1);
+            break;
+
+        case 64: // Prescaler 64
+            TCCR1B |= (1<<CS00);
+            TCCR1B |= (1<<CS01);
+            TCCR1B |= (0<<CS02);
+            TCNT1 = remainder_time;
+            TIMSK |= (1<<TOIE1);
+            break;
+
+        case 256: // Prescaler 256
+            TCCR1B |= (0<<CS00);
+            TCCR1B |= (0<<CS01);
+            TCCR1B |= (1<<CS02);
+            TCNT1 = remainder_time;
+            TIMSK |= (1<<TOIE1);
+            break;
+
+        case 1024: // Prescaler 1024
+            TCCR1B |= (1<<CS00);
+            TCCR1B |= (0<<CS01);
+            TCCR1B |= (1<<CS02);
+            TCNT1 = remainder_time;
+            TIMSK |= (1<<TOIE1);
+            break;
+
+        default:
+            TCNT1 = remainder_time;
+            TIMSK |= (1 << TOIE1);
+            break;
+    }
+
+}
 
 
 
@@ -73,9 +118,11 @@ void main(void)
 {
 // Declare your local variables here 
 
+//for bigger delays(more than 1000ms)use bigger prescaler(256 or 1024).
+//for smaller delays(less than 1ms) use smaller prescaler(8 or 64).
 int prescaler = 256;
-int req_delay = 1000;
-float mcu_clock = 8000000.0;
+float req_delay = 0.1;
+long int mcu_clock = 8000000;
 DDRC |= (1 << 0);
 
 timer1_init(mcu_clock, prescaler, req_delay);

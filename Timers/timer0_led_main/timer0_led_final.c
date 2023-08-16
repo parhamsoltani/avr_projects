@@ -2,7 +2,7 @@
 This program was created by the
 CodeWizardAVR V3.14 Advanced
 Automatic Program Generator
-© Copyright 1998-2014 Pavel Haiduc, HP InfoTech s.r.l.
+Â© Copyright 1998-2014 Pavel Haiduc, HP InfoTech s.r.l.
 http://www.hpinfotech.com
 
 Project : 1 seconde delay for Timer0
@@ -28,15 +28,7 @@ Data Stack size         : 512
 
 unsigned int tot_overflow;
 unsigned int remainder_time;
-
 unsigned int counter_overflow;
-
-long int timer_clock;
-float counting_time;
-float overflow_time;
-long int x;
-float remaining_time;
-long int remaining_counts;
 
 
 // Timer 0 overflow interrupt service routine
@@ -51,21 +43,88 @@ if (counter_overflow >= tot_overflow)  //required delay is one second, so 30 ove
 {
   //remaining time would be 17.023ms which requires almost 133 counting process.
   //TCNT0 would start from 255-133=122 which is 0x7A to 0xFF for the 31th overflow.
-  TCNT0=remainder_time;
+  //TCNT0=remainder_time;
   if (counter_overflow >= (tot_overflow+1))
   {
-      TCNT0 = 0x00;
+      TCNT0 = remainder_time;
       counter_overflow = 0;
       PORTC ^= (1<<0);
-
   }
    
 }
 
 }
 
-void timer0_init(float mcu_clock,int prescaler, int req_delay)
+//CS registers in Timer0 (CS00, CS01, CS02) obtain 8 modes for clock sources.
+//In timer0_init function only 5 modes are supported.
+//prescaler=1 --> No prescaler (CS=001)
+//prescaler=8 --> CLKI/O /8 (CS=010)
+//prescaler=64 --> CLKI/O /64 (CS=011)
+//prescaler=256 --> CLKI/O /256 (CS=100)
+//prescaler=1024 --> CLKI/O /1024 (CS=101)
+
+void timer0_init(long int mcu_clock,int prescaler, float req_delay)
 {
+    float timer_clock;
+    float counting_time;
+    float overflow_time;
+    long int x;
+    float remaining_time;
+    long int remaining_counts;    
+    
+    switch (prescaler)
+    {
+        case 1: // No prescaling
+            TCCR0 |= (1<<CS00);
+            TCCR0 |= (0<<CS01);
+            TCCR0 |= (0<<CS02);
+            TCNT0=0x00;
+            TIMSK |= (1<<TOIE0);
+            counter_overflow = 0; 
+            break;
+        
+        case 8: // Prescaler 8
+            TCCR0 |= (0<<CS00);
+            TCCR0 |= (1<<CS01);
+            TCCR0 |= (0<<CS02);
+            TCNT0=0x00;
+            TIMSK |= (1<<TOIE0);
+            counter_overflow = 0; 
+            break;
+
+        case 64: // Prescaler 64
+            TCCR0 |= (1<<CS00);
+            TCCR0 |= (1<<CS01);
+            TCCR0 |= (0<<CS02);
+            TCNT0=0x00;
+            TIMSK |= (1<<TOIE0);
+            counter_overflow = 0; 
+            break;
+
+        case 256: // Prescaler 256
+            TCCR0 |= (0<<CS00);
+            TCCR0 |= (0<<CS01);
+            TCCR0 |= (1<<CS02);
+            TCNT0=0x00;
+            TIMSK |= (1<<TOIE0);
+            counter_overflow = 0; 
+            break;
+
+        case 1024: // Prescaler 1024
+            TCCR0 |= (1<<CS00); 
+            TCCR0 |= (0<<CS01);
+            TCCR0 |= (1<<CS02);
+            TCNT0=0x00;
+            TIMSK |= (1<<TOIE0);
+            counter_overflow = 0; 
+            break;
+
+        default:
+            TCNT0=0x00;
+            TIMSK |= (1<<TOIE0);
+            counter_overflow = 0;
+            break;
+    }
 
     timer_clock = mcu_clock/prescaler;
     counting_time = 1000.0/timer_clock;
@@ -73,7 +132,7 @@ void timer0_init(float mcu_clock,int prescaler, int req_delay)
     overflow_time = counting_time*256;
     x = req_delay/counting_time;
 
-    if (x > 255)
+    if (req_delay >= overflow_time)
     {
         tot_overflow = (req_delay/overflow_time);
         remaining_time = req_delay - overflow_time*tot_overflow;
@@ -82,13 +141,11 @@ void timer0_init(float mcu_clock,int prescaler, int req_delay)
     }
     else
     {
-        remainder_time = 255 - x;
+        tot_overflow=0;
+        remainder_time = 255 - x; 
+        TCNT0=remainder_time;
     }
 
- TCCR0 |= (1<<CS02);
- TCNT0=0x00;
- TIMSK |= (1<<TOIE0);
- counter_overflow = 0;
 }
 
 void main(void)
@@ -96,8 +153,8 @@ void main(void)
 // Declare your local variables here
     
     int prescaler = 1024;
-    int req_delay = 1000;
-    float mcu_clock = 8000000.0;
+    float req_delay = 1;
+    long int mcu_clock = 8000000;
 
     DDRC |= (1 << PORTC.0);
     timer0_init(mcu_clock,prescaler,req_delay);
@@ -134,7 +191,7 @@ PORTD=(0<<PORTD7) | (0<<PORTD6) | (0<<PORTD5) | (0<<PORTD4) | (0<<PORTD3) | (0<<
 // OC0 output: Disconnected
 // Timer Period: 32 ms
 TCCR0=(0<<WGM00) | (0<<COM01) | (0<<COM00) | (0<<WGM01) | (1<<CS02) | (0<<CS01) | (1<<CS00);
-TCNT0=0x06;
+TCNT0=0x00;
 OCR0=0x00;
 
 // Timer(s)/Counter(s) Interrupt(s) initialization
