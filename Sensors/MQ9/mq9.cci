@@ -1,8 +1,13 @@
-VERSION:3 SOURCE_TIMESTAMP:5713676F
+VERSION:3 SOURCE_TIMESTAMP:57138008
 NODE:I LEVEL:0 LINE:24 "C:\cvavr\inc\mega32a.h"
 NODE:I LEVEL:0 LINE:26 "C:\cvavr\inc\delay.h"
 NODE:I LEVEL:0 LINE:27 "C:\cvavr\inc\stdio.h"
 NODE:I LEVEL:0 LINE:30 "C:\cvavr\inc\alcd.h"
-NODE:M LEVEL:0 LINE:35 "ADC_VREF_TYPE"
-NODE:F LEVEL:0 LINE:38 "read_adc(unsigned char adc_input)"
-NODE:F LEVEL:0 LINE:51 "main(void)"
+NODE:V LEVEL:0 LINE:34 "i -> RAM:????"
+NODE:V LEVEL:0 LINE:35 "MQ9 -> R4,R5"
+NODE:V LEVEL:0 LINE:36 "Buffer_lcd -> RAM:????"
+NODE:M LEVEL:0 LINE:39 "ADC_VREF_TYPE"
+NODE:F LEVEL:0 LINE:42 "read_adc(unsigned char adc_input)"
+NODE:F LEVEL:0 LINE:56 "adc_init(unsigned char prescaler)"
+NODE:F LEVEL:0 LINE:101 "mq9_init(void)"
+NODE:F LEVEL:0 LINE:115 "main(void)"

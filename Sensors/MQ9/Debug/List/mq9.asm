@@ -1084,9 +1084,11 @@ __DELAY_USW_LOOP:
 	.ENDM
 
 ;NAME DEFINITIONS FOR GLOBAL VARIABLES ALLOCATED TO REGISTERS
-	.DEF __lcd_x=R5
-	.DEF __lcd_y=R4
-	.DEF __lcd_maxx=R7
+	.DEF _MQ9=R4
+	.DEF _MQ9_msb=R5
+	.DEF __lcd_x=R7
+	.DEF __lcd_y=R6
+	.DEF __lcd_maxx=R9
 
 	.CSEG
 	.ORG 0x00
@@ -1218,10 +1220,10 @@ __GLOBAL_INI_END:
 ;© Copyright 1998-2014 Pavel Haiduc, HP InfoTech s.r.l.
 ;http://www.hpinfotech.com
 ;
-;Project :
+;Project : MQ9 gas sensor
 ;Version :
 ;Date    : 8/19/2023
-;Author  :
+;Author  : Parham Soltani
 ;Company :
 ;Comments:
 ;
@@ -1255,129 +1257,178 @@ __GLOBAL_INI_END:
 ;
 ;// Declare your global variables here
 ;
+;float i;
+;int MQ9;
+;unsigned char Buffer_lcd[16];
+;
 ;// Voltage Reference: AREF pin
 ;#define ADC_VREF_TYPE ((0<<REFS1) | (0<<REFS0) | (0<<ADLAR))
 ;
 ;// Read the AD conversion result
 ;unsigned int read_adc(unsigned char adc_input)
-; 0000 0027 {
+; 0000 002B {
 
 	.CSEG
 _read_adc:
 ; .FSTART _read_adc
-; 0000 0028 ADMUX=adc_input | ADC_VREF_TYPE;
+; 0000 002C ADMUX=adc_input | ADC_VREF_TYPE;
 	ST   -Y,R26
 ;	adc_input -> Y+0
 	LD   R30,Y
 	OUT  0x7,R30
-; 0000 0029 // Delay needed for the stabilization of the ADC input voltage
-; 0000 002A delay_us(10);
+; 0000 002D // Delay needed for the stabilization of the ADC input voltage
+; 0000 002E delay_us(10);
 	__DELAY_USB 27
-; 0000 002B // Start the AD conversion
-; 0000 002C ADCSRA|=(1<<ADSC);
+; 0000 002F // Start the AD conversion
+; 0000 0030 ADCSRA|=(1<<ADSC);
 	SBI  0x6,6
-; 0000 002D // Wait for the AD conversion to complete
-; 0000 002E while ((ADCSRA & (1<<ADIF))==0);
+; 0000 0031 // Wait for the AD conversion to complete
+; 0000 0032 while ((ADCSRA & (1<<ADIF))==0);
 _0x3:
 	SBIS 0x6,4
 	RJMP _0x3
-; 0000 002F ADCSRA|=(1<<ADIF);
+; 0000 0033 ADCSRA|=(1<<ADIF);
 	SBI  0x6,4
-; 0000 0030 return ADCW;
+; 0000 0034 return ADCW;
 	IN   R30,0x4
 	IN   R31,0x4+1
 	JMP  _0x2080001
-; 0000 0031 }
+; 0000 0035 }
 ; .FEND
 ;
-;void main(void)
-; 0000 0034 {
-_main:
-; .FSTART _main
-; 0000 0035 // Declare your local variables here
-; 0000 0036 float i;
-; 0000 0037 int MQ9;
-; 0000 0038 unsigned char Buffer_lcd[16];
-; 0000 0039 
-; 0000 003A // Input/Output Ports initialization
-; 0000 003B // Port A initialization
-; 0000 003C // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
-; 0000 003D DDRA=(0<<DDA7) | (0<<DDA6) | (0<<DDA5) | (0<<DDA4) | (0<<DDA3) | (0<<DDA2) | (0<<DDA1) | (0<<DDA0);
-	SBIW R28,20
-;	i -> Y+16
-;	MQ9 -> R16,R17
-;	Buffer_lcd -> Y+0
+;
+;void adc_init(unsigned char prescaler)
+; 0000 0039 {
+_adc_init:
+; .FSTART _adc_init
+; 0000 003A     // ADC initialization
+; 0000 003B     // ADC Clock frequency: 1000.000 kHz
+; 0000 003C     // ADC Voltage Reference: AREF pin
+; 0000 003D     // ADC Auto Trigger Source: ADC Stopped
+; 0000 003E 
+; 0000 003F     ADMUX = ADC_VREF_TYPE;
+	ST   -Y,R26
+;	prescaler -> Y+0
 	LDI  R30,LOW(0)
-	OUT  0x1A,R30
-; 0000 003E // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
-; 0000 003F PORTA=(0<<PORTA7) | (0<<PORTA6) | (0<<PORTA5) | (0<<PORTA4) | (0<<PORTA3) | (0<<PORTA2) | (0<<PORTA1) | (0<<PORTA0);
-	OUT  0x1B,R30
-; 0000 0040 
-; 0000 0041 // Port B initialization
-; 0000 0042 // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
-; 0000 0043 DDRB=(0<<DDB7) | (0<<DDB6) | (0<<DDB5) | (0<<DDB4) | (0<<DDB3) | (0<<DDB2) | (0<<DDB1) | (0<<DDB0);
-	OUT  0x17,R30
-; 0000 0044 // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
-; 0000 0045 PORTB=(0<<PORTB7) | (0<<PORTB6) | (0<<PORTB5) | (0<<PORTB4) | (0<<PORTB3) | (0<<PORTB2) | (0<<PORTB1) | (0<<PORTB0);
-	OUT  0x18,R30
-; 0000 0046 
-; 0000 0047 // Port C initialization
-; 0000 0048 // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
-; 0000 0049 DDRC=(0<<DDC7) | (0<<DDC6) | (0<<DDC5) | (0<<DDC4) | (0<<DDC3) | (0<<DDC2) | (0<<DDC1) | (0<<DDC0);
-	OUT  0x14,R30
-; 0000 004A // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
-; 0000 004B PORTC=(0<<PORTC7) | (0<<PORTC6) | (0<<PORTC5) | (0<<PORTC4) | (0<<PORTC3) | (0<<PORTC2) | (0<<PORTC1) | (0<<PORTC0);
-	OUT  0x15,R30
-; 0000 004C 
-; 0000 004D // Port D initialization
-; 0000 004E // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In
-; 0000 004F DDRD=(0<<DDD7) | (0<<DDD6) | (0<<DDD5) | (0<<DDD4) | (0<<DDD3) | (0<<DDD2) | (0<<DDD1) | (0<<DDD0);
-	OUT  0x11,R30
-; 0000 0050 // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T
-; 0000 0051 PORTD=(0<<PORTD7) | (0<<PORTD6) | (0<<PORTD5) | (0<<PORTD4) | (0<<PORTD3) | (0<<PORTD2) | (0<<PORTD1) | (0<<PORTD0);
-	OUT  0x12,R30
-; 0000 0052 
-; 0000 0053 // ADC initialization
-; 0000 0054 // ADC Clock frequency: 1000.000 kHz
-; 0000 0055 // ADC Voltage Reference: AREF pin
-; 0000 0056 // ADC Auto Trigger Source: ADC Stopped
-; 0000 0057 ADMUX=ADC_VREF_TYPE;
 	OUT  0x7,R30
-; 0000 0058 ADCSRA=(1<<ADEN) | (0<<ADSC) | (0<<ADATE) | (0<<ADIF) | (0<<ADIE) | (1<<ADPS2) | (0<<ADPS1) | (1<<ADPS0);
-	LDI  R30,LOW(133)
+; 0000 0040     ADCSRA = (1 << ADEN) | (0 << ADSC) | (0 << ADATE) | (0 << ADIF) | (0 << ADIE);
+	LDI  R30,LOW(128)
 	OUT  0x6,R30
-; 0000 0059 SFIOR=(0<<ADTS2) | (0<<ADTS1) | (0<<ADTS0);
+; 0000 0041 
+; 0000 0042     //default MCU clock frequency is considered 8MHz.
+; 0000 0043     //for 1000.000 kHz ADC frequency, prescaler 64 is used with ADPS registers.
+; 0000 0044 
+; 0000 0045     switch (prescaler)
+	LD   R30,Y
+	LDI  R31,0
+; 0000 0046     {
+; 0000 0047         case 2:
+	CPI  R30,LOW(0x2)
+	LDI  R26,HIGH(0x2)
+	CPC  R31,R26
+	BRNE _0x9
+; 0000 0048             ADCSRA |= (0 << ADPS2) | (0 << ADPS1) | (1 << ADPS0);
+	SBI  0x6,0
+; 0000 0049             break;
+	RJMP _0x8
+; 0000 004A         case 4:
+_0x9:
+	CPI  R30,LOW(0x4)
+	LDI  R26,HIGH(0x4)
+	CPC  R31,R26
+	BRNE _0xA
+; 0000 004B             ADCSRA |= (0 << ADPS2) | (1 << ADPS1) | (0 << ADPS0);
+	SBI  0x6,1
+; 0000 004C             break;
+	RJMP _0x8
+; 0000 004D         case 8:
+_0xA:
+	CPI  R30,LOW(0x8)
+	LDI  R26,HIGH(0x8)
+	CPC  R31,R26
+	BRNE _0xB
+; 0000 004E             ADCSRA |= (0 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
+	IN   R30,0x6
+	ORI  R30,LOW(0x3)
+	RJMP _0x15
+; 0000 004F             break;
+; 0000 0050         case 16:
+_0xB:
+	CPI  R30,LOW(0x10)
+	LDI  R26,HIGH(0x10)
+	CPC  R31,R26
+	BRNE _0xC
+; 0000 0051             ADCSRA |= (1 << ADPS2) | (0 << ADPS1) | (0 << ADPS0);
+	SBI  0x6,2
+; 0000 0052             break;
+	RJMP _0x8
+; 0000 0053         case 32:
+_0xC:
+	CPI  R30,LOW(0x20)
+	LDI  R26,HIGH(0x20)
+	CPC  R31,R26
+	BRNE _0xD
+; 0000 0054             ADCSRA |= (1 << ADPS2) | (0 << ADPS1) | (1 << ADPS0);
+	IN   R30,0x6
+	ORI  R30,LOW(0x5)
+	RJMP _0x15
+; 0000 0055             break;
+; 0000 0056         case 64:
+_0xD:
+	CPI  R30,LOW(0x40)
+	LDI  R26,HIGH(0x40)
+	CPC  R31,R26
+	BREQ _0x16
+; 0000 0057             ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (0 << ADPS0);
+; 0000 0058             break;
+; 0000 0059         case 128:
+	CPI  R30,LOW(0x80)
+	LDI  R26,HIGH(0x80)
+	CPC  R31,R26
+	BRNE _0x10
+; 0000 005A             ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
+	IN   R30,0x6
+	ORI  R30,LOW(0x7)
+	RJMP _0x15
+; 0000 005B             break;
+; 0000 005C         default:
+_0x10:
+; 0000 005D             // Default to prescaler 64
+; 0000 005E             ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (0 << ADPS0);
+_0x16:
+	IN   R30,0x6
+	ORI  R30,LOW(0x6)
+_0x15:
+	OUT  0x6,R30
+; 0000 005F             break;
+; 0000 0060     }
+_0x8:
+; 0000 0061 
+; 0000 0062     SFIOR = (0 << ADTS2) | (0 << ADTS1) | (0 << ADTS0);
 	LDI  R30,LOW(0)
 	OUT  0x30,R30
-; 0000 005A 
-; 0000 005B // Alphanumeric LCD initialization
-; 0000 005C // Connections are specified in the
-; 0000 005D // Project|Configure|C Compiler|Libraries|Alphanumeric LCD menu:
-; 0000 005E // RS - PORTC Bit 0
-; 0000 005F // RD - PORTC Bit 1
-; 0000 0060 // EN - PORTC Bit 2
-; 0000 0061 // D4 - PORTC Bit 4
-; 0000 0062 // D5 - PORTC Bit 5
-; 0000 0063 // D6 - PORTC Bit 6
-; 0000 0064 // D7 - PORTC Bit 7
-; 0000 0065 // Characters/line: 8
-; 0000 0066 lcd_init(16);
-	LDI  R26,LOW(16)
-	CALL _lcd_init
-; 0000 0067 
-; 0000 0068 while (1)
-_0x6:
-; 0000 0069       {
-; 0000 006A       // Place your code here
-; 0000 006B       i=read_adc(0);
+; 0000 0063 }
+	JMP  _0x2080001
+; .FEND
+;
+;void mq9_init(void)
+; 0000 0066 {
+_mq9_init:
+; .FSTART _mq9_init
+; 0000 0067 i=read_adc(0);
 	LDI  R26,LOW(0)
 	RCALL _read_adc
+	LDI  R26,LOW(_i)
+	LDI  R27,HIGH(_i)
 	CLR  R22
 	CLR  R23
 	CALL __CDF1
-	__PUTD1S 16
-; 0000 006C       MQ9=(i*100)/1023 ;
-	__GETD2S 16
+	CALL __PUTDP1
+; 0000 0068 MQ9=(i*100)/1023 ;
+	LDS  R26,_i
+	LDS  R27,_i+1
+	LDS  R24,_i+2
+	LDS  R25,_i+3
 	__GETD1N 0x42C80000
 	CALL __MULF12
 	MOVW R26,R30
@@ -1385,43 +1436,91 @@ _0x6:
 	__GETD1N 0x447FC000
 	CALL __DIVF21
 	CALL __CFD1
-	MOVW R16,R30
-; 0000 006D       sprintf(Buffer_lcd,"Gas amount: %d",MQ9);
-	MOVW R30,R28
+	MOVW R4,R30
+; 0000 0069 sprintf(Buffer_lcd,"Gas amount: %d",MQ9);
+	LDI  R30,LOW(_Buffer_lcd)
+	LDI  R31,HIGH(_Buffer_lcd)
 	ST   -Y,R31
 	ST   -Y,R30
 	__POINTW1FN _0x0,0
 	ST   -Y,R31
 	ST   -Y,R30
-	MOVW R30,R16
+	MOVW R30,R4
 	CALL __CWD1
 	CALL __PUTPARD1
 	LDI  R24,4
 	CALL _sprintf
 	ADIW R28,8
-; 0000 006E       lcd_gotoxy(0,0);
+; 0000 006A lcd_gotoxy(0,0);
 	LDI  R30,LOW(0)
 	ST   -Y,R30
 	LDI  R26,LOW(0)
 	CALL _lcd_gotoxy
-; 0000 006F       lcd_puts(Buffer_lcd);
-	MOVW R26,R28
+; 0000 006B lcd_puts(Buffer_lcd);
+	LDI  R26,LOW(_Buffer_lcd)
+	LDI  R27,HIGH(_Buffer_lcd)
 	CALL _lcd_puts
-; 0000 0070       lcd_putsf("%");
+; 0000 006C lcd_putsf("%");
 	__POINTW2FN _0x0,15
 	CALL _lcd_putsf
-; 0000 0071       delay_ms(500);
+; 0000 006D delay_ms(500);
 	LDI  R26,LOW(500)
 	LDI  R27,HIGH(500)
 	CALL _delay_ms
-; 0000 0072       lcd_clear();
+; 0000 006E lcd_clear();
 	CALL _lcd_clear
-; 0000 0073 
-; 0000 0074       }
-	RJMP _0x6
-; 0000 0075 }
-_0x9:
-	RJMP _0x9
+; 0000 006F }
+	RET
+; .FEND
+;
+;
+;
+;void main(void)
+; 0000 0074 {
+_main:
+; .FSTART _main
+; 0000 0075 // Declare your local variables here
+; 0000 0076 
+; 0000 0077 
+; 0000 0078 // Input/Output Ports initialization
+; 0000 0079 // Port A initialization
+; 0000 007A DDRA= (0<<DDA0);
+	LDI  R30,LOW(0)
+	OUT  0x1A,R30
+; 0000 007B PORTA= (0<<PORTA0);
+	OUT  0x1B,R30
+; 0000 007C 
+; 0000 007D 
+; 0000 007E // Alphanumeric LCD initialization
+; 0000 007F // Connections are specified in the
+; 0000 0080 // Project|Configure|C Compiler|Libraries|Alphanumeric LCD menu:
+; 0000 0081 // RS - PORTC Bit 0
+; 0000 0082 // RD - PORTC Bit 1
+; 0000 0083 // EN - PORTC Bit 2
+; 0000 0084 // D4 - PORTC Bit 4
+; 0000 0085 // D5 - PORTC Bit 5
+; 0000 0086 // D6 - PORTC Bit 6
+; 0000 0087 // D7 - PORTC Bit 7
+; 0000 0088 // Characters/line: 8
+; 0000 0089 lcd_init(16);
+	LDI  R26,LOW(16)
+	CALL _lcd_init
+; 0000 008A adc_init(64);
+	LDI  R26,LOW(64)
+	RCALL _adc_init
+; 0000 008B 
+; 0000 008C while (1)
+_0x11:
+; 0000 008D       {
+; 0000 008E       // Place your code here
+; 0000 008F       mq9_init();
+	RCALL _mq9_init
+; 0000 0090 
+; 0000 0091       }
+	RJMP _0x11
+; 0000 0092 }
+_0x14:
+	RJMP _0x14
 ; .FEND
 	#ifndef __SLEEP_DEFINED__
 	#define __SLEEP_DEFINED__
@@ -1965,8 +2064,8 @@ _lcd_gotoxy:
 	LDD  R26,Y+1
 	ADD  R26,R30
 	RCALL __lcd_write_data
-	LDD  R5,Y+1
-	LDD  R4,Y+0
+	LDD  R7,Y+1
+	LDD  R6,Y+0
 	ADIW R28,2
 	RET
 ; .FEND
@@ -1979,8 +2078,8 @@ _lcd_clear:
 	LDI  R26,LOW(1)
 	CALL SUBOPT_0x6
 	LDI  R30,LOW(0)
-	MOV  R4,R30
-	MOV  R5,R30
+	MOV  R6,R30
+	MOV  R7,R30
 	RET
 ; .FEND
 _lcd_putchar:
@@ -1989,13 +2088,13 @@ _lcd_putchar:
 	LD   R26,Y
 	CPI  R26,LOW(0xA)
 	BREQ _0x2020005
-	CP   R5,R7
+	CP   R7,R9
 	BRLO _0x2020004
 _0x2020005:
 	LDI  R30,LOW(0)
 	ST   -Y,R30
-	INC  R4
-	MOV  R26,R4
+	INC  R6
+	MOV  R26,R6
 	RCALL _lcd_gotoxy
 	LD   R26,Y
 	CPI  R26,LOW(0xA)
@@ -2003,7 +2102,7 @@ _0x2020005:
 	RJMP _0x2080001
 _0x2020007:
 _0x2020004:
-	INC  R5
+	INC  R7
 	SBI  0x15,0
 	LD   R26,Y
 	RCALL __lcd_write_data
@@ -2067,7 +2166,7 @@ _lcd_init:
 	CBI  0x15,2
 	CBI  0x15,0
 	CBI  0x15,1
-	LDD  R7,Y+0
+	LDD  R9,Y+0
 	LD   R30,Y
 	SUBI R30,-LOW(128)
 	__PUTB1MN __base_y_G101,2
@@ -2137,6 +2236,10 @@ strlenf1:
 ; .FEND
 
 	.DSEG
+_i:
+	.BYTE 0x4
+_Buffer_lcd:
+	.BYTE 0x10
 __base_y_G101:
 	.BYTE 0x4
 
@@ -2616,6 +2719,13 @@ __GETW1P:
 	LD   R30,X+
 	LD   R31,X
 	SBIW R26,1
+	RET
+
+__PUTDP1:
+	ST   X+,R30
+	ST   X+,R31
+	ST   X+,R22
+	ST   X,R23
 	RET
 
 __GETW1PF:
