@@ -1,0 +1,24 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+str                                                                               0x0260      20
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+data                                                                              R5           1
+i                                                                                 R6,R7        2
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+usart_init                                                                        0x00064     13
+usart_read_char                                                                   0x00071      4
+usart_write_char                                                                  0x00075     24
+usart_write_string_modified                                                       0x0008D     44
+main                                                                              0x000B9     40
+getchar                                                                           0x000E1      4

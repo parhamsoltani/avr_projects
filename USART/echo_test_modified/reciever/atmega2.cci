@@ -1,0 +1,11 @@
+VERSION:3 SOURCE_TIMESTAMP:57167F0F
+NODE:I LEVEL:0 LINE:24 "C:\cvavr\inc\mega32a.h"
+NODE:I LEVEL:0 LINE:25 "C:\cvavr\inc\delay.h"
+NODE:I LEVEL:0 LINE:28 "C:\cvavr\inc\alcd.h"
+NODE:V LEVEL:0 LINE:31 "str -> RAM:????"
+NODE:V LEVEL:0 LINE:32 "ch -> R5"
+NODE:V LEVEL:0 LINE:33 "i -> R6,R7"
+NODE:V LEVEL:0 LINE:33 "j -> R8,R9"
+NODE:I LEVEL:0 LINE:36 "C:\cvavr\inc\stdio.h"
+NODE:F LEVEL:0 LINE:38 "usart_init(void)"
+NODE:F LEVEL:0 LINE:55 "main(void)"
