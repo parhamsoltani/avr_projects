@@ -1,0 +1,3 @@
+main DSTACK_USAGE:0 DSTACK_LEVEL:0 FILE:"usart_test4.c" LINE:57
+usart_init DSTACK_USAGE:4 DSTACK_LEVEL:4 FILE:"usart_test4.c" LINE:40
+usart_rx_isr DSTACK_USAGE:1 DSTACK_LEVEL:5 FILE:"usart_test4.c" LINE:35
