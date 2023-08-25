@@ -1,0 +1,13 @@
+VERSION:3 SOURCE_TIMESTAMP:571A0480
+NODE:I LEVEL:0 LINE:24 "C:\cvavr\inc\mega32.h"
+NODE:I LEVEL:0 LINE:25 "C:\cvavr\inc\delay.h"
+NODE:I LEVEL:0 LINE:26 "C:\cvavr\inc\stdio.h"
+NODE:I LEVEL:0 LINE:27 "C:\cvavr\inc\stdlib.h"
+NODE:I LEVEL:0 LINE:30 "C:\cvavr\inc\i2c.h"
+NODE:I LEVEL:0 LINE:33 "C:\cvavr\inc\alcd.h"
+NODE:M LEVEL:0 LINE:35 "BMP280_I2C_ADDRESS"
+NODE:I LEVEL:0 LINE:36 "BMP280_Lib.c"
+NODE:V LEVEL:0 LINE:41 "Buffer_lcd -> RAM:????"
+NODE:V LEVEL:0 LINE:42 "temperature -> RAM:????"
+NODE:V LEVEL:0 LINE:43 "pressure -> RAM:????"
+NODE:F LEVEL:0 LINE:45 "main(void)"

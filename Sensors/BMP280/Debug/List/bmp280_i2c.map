@@ -1,0 +1,49 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+adc_T                                                                             0x027E       4
+adc_P                                                                             0x0282       4
+t_fine                                                                            0x0286       4
+BMP280_calib                                                                      0x028A      24
+Buffer_lcd                                                                        0x02A2      16
+temperature                                                                       0x02B2       4
+pressure                                                                          0x02B6       4
+_seed                                                                             0x02BA       4
+_base_y                                                                           0x02BE       4
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+_lcd_x                                                                            R5           1
+_lcd_y                                                                            R4           1
+_lcd_maxx                                                                         R7           1
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+BMP280_Write                                                                      0x00096     10
+BMP280_Read8                                                                      0x000A0     16
+BMP280_Read16                                                                     0x000B0     26
+BMP280_Configure                                                                  0x000CA     15
+BMP280_begin                                                                      0x000D9    101
+BMP280_Update                                                                     0x0013E     49
+BMP280_readTemperature                                                            0x0016F    112
+BMP280_readPressure                                                               0x001DF    346
+main                                                                              0x00339    144
+put_buff_G100                                                                     0x003C9     64
+_print_G100                                                                       0x00409    308
+sprintf                                                                           0x0053D     52
+abs                                                                               0x00571     10
+_lcd_write_nibble_G102                                                            0x0057B     20
+_lcd_write_data                                                                   0x0058F     12
+lcd_gotoxy                                                                        0x0059B     13
+lcd_clear                                                                         0x005A8     12
+lcd_putchar                                                                       0x005B4     21
+lcd_puts                                                                          0x005C9     17
+lcd_init                                                                          0x005DA     46
+strlen                                                                            0x00608     12
+strlenf                                                                           0x00614     13
