@@ -1949,7 +1949,7 @@ _0xB:
 	MOVW R24,R22
 	__GETD1S 8
 	CALL __DIVD21U
-	RJMP _0x19
+	RJMP _0x16
 ;
 ;  else
 _0xC:
@@ -1958,7 +1958,7 @@ _0xC:
 	CALL SUBOPT_0x17
 	CALL __DIVD21U
 	CALL __LSLD1
-_0x19:
+_0x16:
 	CALL __PUTD1S0
 ;
 ;  var1 = (((int32_t)BMP280_calib.dig_P9) * ((int32_t)(((p/8) * (p/8)) / 8192))) / 4096;
@@ -2038,104 +2038,70 @@ _0x20C0005:
 ;int32_t temperature;
 ;uint32_t pressure;
 ;
-;void main(void)
+;void bmp280_init()
 ; 0000 002E {
-_main:
-; .FSTART _main
-; 0000 002F // Declare your local variables here
-; 0000 0030 
-; 0000 0031 
-; 0000 0032 // Bit-Banged I2C Bus initialization
-; 0000 0033 // I2C Port: PORTC
-; 0000 0034 // I2C SDA bit: 1
-; 0000 0035 // I2C SCL bit: 0
-; 0000 0036 // Bit Rate: 100 kHz
-; 0000 0037 // Note: I2C settings are specified in the
-; 0000 0038 // Project|Configure|C Compiler|Libraries|I2C menu.
-; 0000 0039 i2c_init();
-	CALL _i2c_init
-; 0000 003A 
-; 0000 003B // Alphanumeric LCD initialization
-; 0000 003C // Connections are specified in the
-; 0000 003D // Project|Configure|C Compiler|Libraries|Alphanumeric LCD menu:
-; 0000 003E // RS - PORTD Bit 0
-; 0000 003F // RD - PORTD Bit 1
-; 0000 0040 // EN - PORTD Bit 2
-; 0000 0041 // D4 - PORTD Bit 4
-; 0000 0042 // D5 - PORTD Bit 5
-; 0000 0043 // D6 - PORTD Bit 6
-; 0000 0044 // D7 - PORTD Bit 7
-; 0000 0045 // Characters/line: 16
-; 0000 0046 lcd_init(16);
-	LDI  R26,LOW(16)
-	CALL _lcd_init
-; 0000 0047 
-; 0000 0048 // initialize the BMP280 sensor
-; 0000 0049 if(BMP280_begin() == 0)
+_bmp280_init:
+; .FSTART _bmp280_init
+; 0000 002F 
+; 0000 0030 // initialize the BMP280 sensor
+; 0000 0031 if(BMP280_begin() == 0)
 	RCALL _BMP280_begin
 	SBIW R30,0
 	BRNE _0xE
-; 0000 004A {  // connection error or device address wrong!
-; 0000 004B     lcd_gotoxy(0, 0);
+; 0000 0032 {  // connection error or device address wrong!
+; 0000 0033     lcd_gotoxy(0, 0);
 	LDI  R30,LOW(0)
 	CALL SUBOPT_0x19
-; 0000 004C     lcd_puts("Connection");
+; 0000 0034     lcd_puts("Connection");
 	__POINTW2MN _0xF,0
 	CALL _lcd_puts
-; 0000 004D     lcd_gotoxy(0, 1);
+; 0000 0035     lcd_gotoxy(0, 1);
 	LDI  R30,LOW(0)
 	CALL SUBOPT_0x1A
-; 0000 004E     lcd_puts("error!");
+; 0000 0036     lcd_puts("error!");
 	__POINTW2MN _0xF,11
 	CALL _lcd_puts
-; 0000 004F     while(1);  // stay here
-_0x10:
-	RJMP _0x10
-; 0000 0050 }
-; 0000 0051 
-; 0000 0052 lcd_gotoxy(0, 1);
+; 0000 0037 }
+; 0000 0038 
+; 0000 0039 lcd_gotoxy(0, 1);
 _0xE:
 	LDI  R30,LOW(0)
 	CALL SUBOPT_0x1A
-; 0000 0053 lcd_puts("Temp:");
+; 0000 003A lcd_puts("Temp:");
 	__POINTW2MN _0xF,18
 	CALL _lcd_puts
-; 0000 0054 lcd_gotoxy(0, 0);
+; 0000 003B lcd_gotoxy(0, 0);
 	LDI  R30,LOW(0)
 	CALL SUBOPT_0x19
-; 0000 0055 lcd_puts("Pres:");
+; 0000 003C lcd_puts("Pres:");
 	__POINTW2MN _0xF,24
 	CALL _lcd_puts
-; 0000 0056 
-; 0000 0057 while (1)
-_0x13:
-; 0000 0058       {
-; 0000 0059       // Place your code here
-; 0000 005A       // Read temperature (in hundredths C) and pressure (in Pa)
-; 0000 005B       // Values from BMP280 sensor
-; 0000 005C       BMP280_readTemperature(&temperature);  // Reading temperature
+; 0000 003D 
+; 0000 003E // Read temperature (in hundredths C) and pressure (in Pa)
+; 0000 003F // Values from BMP280 sensor
+; 0000 0040 BMP280_readTemperature(&temperature);  // Reading temperature
 	LDI  R26,LOW(_temperature)
 	LDI  R27,HIGH(_temperature)
 	RCALL _BMP280_readTemperature
-; 0000 005D       BMP280_readPressure(&pressure);        // Reading pressure
+; 0000 0041 BMP280_readPressure(&pressure);        // Reading pressure
 	LDI  R26,LOW(_pressure)
 	LDI  R27,HIGH(_pressure)
 	RCALL _BMP280_readPressure
-; 0000 005E 
-; 0000 005F       // Print data on the LCD screen
-; 0000 0060       //Temperature
-; 0000 0061       lcd_gotoxy(5, 1);
+; 0000 0042 
+; 0000 0043 // Print data on the LCD screen
+; 0000 0044 //Temperature
+; 0000 0045 lcd_gotoxy(5, 1);
 	LDI  R30,LOW(5)
 	CALL SUBOPT_0x1A
-; 0000 0062       if(temperature < 0)
+; 0000 0046 if(temperature < 0)
 	LDS  R26,_temperature+3
 	TST  R26
-	BRPL _0x16
-; 0000 0063       {
-; 0000 0064         lcd_putchar('-');
+	BRPL _0x10
+; 0000 0047 {
+; 0000 0048 lcd_putchar('-');
 	LDI  R26,LOW(45)
 	CALL _lcd_putchar
-; 0000 0065         temperature = abs(temperature);
+; 0000 0049 temperature = abs(temperature);
 	LDS  R26,_temperature
 	LDS  R27,_temperature+1
 	CALL _abs
@@ -2145,16 +2111,16 @@ _0x13:
 	STS  _temperature+1,R31
 	STS  _temperature+2,R22
 	STS  _temperature+3,R23
-; 0000 0066       }
-; 0000 0067       else
-	RJMP _0x17
-_0x16:
-; 0000 0068       lcd_putchar(' ');
+; 0000 004A }
+; 0000 004B else
+	RJMP _0x11
+_0x10:
+; 0000 004C lcd_putchar(' ');
 	LDI  R26,LOW(32)
 	CALL _lcd_putchar
-; 0000 0069 
-; 0000 006A       sprintf(Buffer_lcd, "%02u.%02u%cC", temperature / 100, temperature % 100, 223);
-_0x17:
+; 0000 004D 
+; 0000 004E sprintf(Buffer_lcd, "%02u.%02u%cC", temperature / 100, temperature % 100, 223);
+_0x11:
 	LDI  R30,LOW(_Buffer_lcd)
 	LDI  R31,HIGH(_Buffer_lcd)
 	ST   -Y,R31
@@ -2173,16 +2139,16 @@ _0x17:
 	LDI  R24,12
 	CALL _sprintf
 	ADIW R28,16
-; 0000 006B 	  lcd_puts(Buffer_lcd);
+; 0000 004F lcd_puts(Buffer_lcd);
 	LDI  R26,LOW(_Buffer_lcd)
 	LDI  R27,HIGH(_Buffer_lcd)
 	CALL _lcd_puts
-; 0000 006C 
-; 0000 006D       //Pressure
-; 0000 006E       lcd_gotoxy(6, 0);
+; 0000 0050 
+; 0000 0051 //Pressure
+; 0000 0052 lcd_gotoxy(6, 0);
 	LDI  R30,LOW(6)
 	CALL SUBOPT_0x19
-; 0000 006F       sprintf(Buffer_lcd, "%04u.%02uhPa", pressure/100, pressure % 100);
+; 0000 0053 sprintf(Buffer_lcd, "%04u.%02uhPa", pressure/100, pressure % 100);
 	LDI  R30,LOW(_Buffer_lcd)
 	LDI  R31,HIGH(_Buffer_lcd)
 	ST   -Y,R31
@@ -2199,26 +2165,75 @@ _0x17:
 	LDI  R24,8
 	CALL _sprintf
 	ADIW R28,12
-; 0000 0070       lcd_puts(Buffer_lcd);
+; 0000 0054 lcd_puts(Buffer_lcd);
 	LDI  R26,LOW(_Buffer_lcd)
 	LDI  R27,HIGH(_Buffer_lcd)
 	CALL _lcd_puts
-; 0000 0071 
-; 0000 0072       delay_ms(2000);  // wait 2 seconds
+; 0000 0055 
+; 0000 0056 delay_ms(2000);  // wait 2 seconds
 	LDI  R26,LOW(2000)
 	LDI  R27,HIGH(2000)
 	CALL _delay_ms
-; 0000 0073 
-; 0000 0074       }
-	RJMP _0x13
-; 0000 0075 }
-_0x18:
-	RJMP _0x18
+; 0000 0057 
+; 0000 0058 
+; 0000 0059 }
+	RET
 ; .FEND
 
 	.DSEG
 _0xF:
 	.BYTE 0x1E
+;
+;void main(void)
+; 0000 005C {
+
+	.CSEG
+_main:
+; .FSTART _main
+; 0000 005D // Declare your local variables here
+; 0000 005E 
+; 0000 005F 
+; 0000 0060 // Bit-Banged I2C Bus initialization
+; 0000 0061 // I2C Port: PORTC
+; 0000 0062 // I2C SDA bit: 1
+; 0000 0063 // I2C SCL bit: 0
+; 0000 0064 // Bit Rate: 100 kHz
+; 0000 0065 // Note: I2C settings are specified in the
+; 0000 0066 // Project|Configure|C Compiler|Libraries|I2C menu.
+; 0000 0067 i2c_init();
+	CALL _i2c_init
+; 0000 0068 
+; 0000 0069 // Alphanumeric LCD initialization
+; 0000 006A // Connections are specified in the
+; 0000 006B // Project|Configure|C Compiler|Libraries|Alphanumeric LCD menu:
+; 0000 006C // RS - PORTD Bit 0
+; 0000 006D // RD - PORTD Bit 1
+; 0000 006E // EN - PORTD Bit 2
+; 0000 006F // D4 - PORTD Bit 4
+; 0000 0070 // D5 - PORTD Bit 5
+; 0000 0071 // D6 - PORTD Bit 6
+; 0000 0072 // D7 - PORTD Bit 7
+; 0000 0073 // Characters/line: 16
+; 0000 0074 lcd_init(16);
+	LDI  R26,LOW(16)
+	CALL _lcd_init
+; 0000 0075 
+; 0000 0076 
+; 0000 0077 
+; 0000 0078 while (1)
+_0x12:
+; 0000 0079       {
+; 0000 007A       // Place your code here
+; 0000 007B       bmp280_init();
+	RCALL _bmp280_init
+; 0000 007C 
+; 0000 007D 
+; 0000 007E       }
+	RJMP _0x12
+; 0000 007F }
+_0x15:
+	RJMP _0x15
+; .FEND
 ;
 ;
 ;

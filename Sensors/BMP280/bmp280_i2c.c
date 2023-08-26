@@ -42,6 +42,52 @@ unsigned char Buffer_lcd[16];
 int32_t temperature;
 uint32_t pressure;
 
+void bmp280_init()
+{
+
+// initialize the BMP280 sensor
+if(BMP280_begin() == 0)
+{  // connection error or device address wrong!
+    lcd_gotoxy(0, 0);   
+    lcd_puts("Connection");
+    lcd_gotoxy(0, 1);   
+    lcd_puts("error!");
+}
+	
+lcd_gotoxy(0, 1);    
+lcd_puts("Temp:");
+lcd_gotoxy(0, 0);    
+lcd_puts("Pres:");
+
+// Read temperature (in hundredths C) and pressure (in Pa)
+// Values from BMP280 sensor
+BMP280_readTemperature(&temperature);  // Reading temperature
+BMP280_readPressure(&pressure);        // Reading pressure
+       
+// Print data on the LCD screen
+//Temperature 
+lcd_gotoxy(5, 1);    
+if(temperature < 0)
+{
+lcd_putchar('-');
+temperature = abs(temperature);
+}
+else
+lcd_putchar(' ');
+       
+sprintf(Buffer_lcd, "%02u.%02u%cC", temperature / 100, temperature % 100, 223);
+lcd_puts(Buffer_lcd);
+
+//Pressure 
+lcd_gotoxy(6, 0);    
+sprintf(Buffer_lcd, "%04u.%02uhPa", pressure/100, pressure % 100);
+lcd_puts(Buffer_lcd);
+
+delay_ms(2000);  // wait 2 seconds
+
+
+}
+
 void main(void)
 {
 // Declare your local variables here
@@ -69,49 +115,13 @@ i2c_init();
 // Characters/line: 16
 lcd_init(16);
 
-// initialize the BMP280 sensor
-if(BMP280_begin() == 0)
-{  // connection error or device address wrong!
-    lcd_gotoxy(0, 0);   
-    lcd_puts("Connection");
-    lcd_gotoxy(0, 1);   
-    lcd_puts("error!");
-    while(1);  // stay here
-}
-	
-lcd_gotoxy(0, 1);    
-lcd_puts("Temp:");
-lcd_gotoxy(0, 0);    
-lcd_puts("Pres:");
+
 
 while (1)
       {
-      // Place your code here  
-      // Read temperature (in hundredths C) and pressure (in Pa)
-      // Values from BMP280 sensor
-      BMP280_readTemperature(&temperature);  // Reading temperature
-      BMP280_readPressure(&pressure);        // Reading pressure
-       
-      // Print data on the LCD screen
-      //Temperature 
-      lcd_gotoxy(5, 1);    
-      if(temperature < 0)
-      {
-        lcd_putchar('-');
-        temperature = abs(temperature);
-      }
-      else
-      lcd_putchar(' ');
-       
-      sprintf(Buffer_lcd, "%02u.%02u%cC", temperature / 100, temperature % 100, 223);
-	  lcd_puts(Buffer_lcd);
+      // Place your code here 
+      bmp280_init(); 
 
-      //Pressure 
-      lcd_gotoxy(6, 0);    
-      sprintf(Buffer_lcd, "%04u.%02uhPa", pressure/100, pressure % 100);
-      lcd_puts(Buffer_lcd);
-
-      delay_ms(2000);  // wait 2 seconds
 
       }
 }

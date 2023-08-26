@@ -1,4 +1,4 @@
-VERSION:3 SOURCE_TIMESTAMP:571A0480
+VERSION:3 SOURCE_TIMESTAMP:571A6014
 NODE:I LEVEL:0 LINE:24 "C:\cvavr\inc\mega32.h"
 NODE:I LEVEL:0 LINE:25 "C:\cvavr\inc\delay.h"
 NODE:I LEVEL:0 LINE:26 "C:\cvavr\inc\stdio.h"
@@ -10,4 +10,5 @@ NODE:I LEVEL:0 LINE:36 "BMP280_Lib.c"
 NODE:V LEVEL:0 LINE:41 "Buffer_lcd -> RAM:????"
 NODE:V LEVEL:0 LINE:42 "temperature -> RAM:????"
 NODE:V LEVEL:0 LINE:43 "pressure -> RAM:????"
-NODE:F LEVEL:0 LINE:45 "main(void)"
+NODE:F LEVEL:0 LINE:45 "bmp280_init(void)"
+NODE:F LEVEL:0 LINE:91 "main(void)"

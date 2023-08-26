@@ -852,129 +852,101 @@
 ;int32_t temperature;
 ;uint32_t pressure;
 ;
-;void main(void)
+;void bmp280_init()
 ; 0000 002E {
 ;PCODE: $000001E8 VOL: 0
-; 0000 002F // Declare your local variables here
-; 0000 0030 
-; 0000 0031 
-; 0000 0032 // Bit-Banged I2C Bus initialization
-; 0000 0033 // I2C Port: PORTC
-; 0000 0034 // I2C SDA bit: 1
-; 0000 0035 // I2C SCL bit: 0
-; 0000 0036 // Bit Rate: 100 kHz
-; 0000 0037 // Note: I2C settings are specified in the
-; 0000 0038 // Project|Configure|C Compiler|Libraries|I2C menu.
-; 0000 0039 i2c_init();
 ;PCODE: $000001E9 VOL: 0
-; 0000 003A 
-; 0000 003B // Alphanumeric LCD initialization
-; 0000 003C // Connections are specified in the
-; 0000 003D // Project|Configure|C Compiler|Libraries|Alphanumeric LCD menu:
-; 0000 003E // RS - PORTD Bit 0
-; 0000 003F // RD - PORTD Bit 1
-; 0000 0040 // EN - PORTD Bit 2
-; 0000 0041 // D4 - PORTD Bit 4
-; 0000 0042 // D5 - PORTD Bit 5
-; 0000 0043 // D6 - PORTD Bit 6
-; 0000 0044 // D7 - PORTD Bit 7
-; 0000 0045 // Characters/line: 16
-; 0000 0046 lcd_init(16);
+; 0000 002F 
+; 0000 0030 // initialize the BMP280 sensor
+; 0000 0031 if(BMP280_begin() == 0)
 ;PCODE: $000001EA VOL: 0
 ;PCODE: $000001EB VOL: 0
-; 0000 0047 
-; 0000 0048 // initialize the BMP280 sensor
-; 0000 0049 if(BMP280_begin() == 0)
 ;PCODE: $000001EC VOL: 0
+; 0000 0032 {  // connection error or device address wrong!
+; 0000 0033     lcd_gotoxy(0, 0);
 ;PCODE: $000001ED VOL: 0
 ;PCODE: $000001EE VOL: 0
-; 0000 004A {  // connection error or device address wrong!
-; 0000 004B     lcd_gotoxy(0, 0);
 ;PCODE: $000001EF VOL: 0
 ;PCODE: $000001F0 VOL: 0
+; 0000 0034     lcd_puts("Connection");
 ;PCODE: $000001F1 VOL: 0
 ;PCODE: $000001F2 VOL: 0
-; 0000 004C     lcd_puts("Connection");
 ;PCODE: $000001F3 VOL: 0
+; 0000 0035     lcd_gotoxy(0, 1);
 ;PCODE: $000001F4 VOL: 0
 ;PCODE: $000001F5 VOL: 0
-; 0000 004D     lcd_gotoxy(0, 1);
 ;PCODE: $000001F6 VOL: 0
 ;PCODE: $000001F7 VOL: 0
+; 0000 0036     lcd_puts("error!");
 ;PCODE: $000001F8 VOL: 0
 ;PCODE: $000001F9 VOL: 0
-; 0000 004E     lcd_puts("error!");
 ;PCODE: $000001FA VOL: 0
+; 0000 0037 }
+; 0000 0038 
+; 0000 0039 lcd_gotoxy(0, 1);
 ;PCODE: $000001FB VOL: 0
 ;PCODE: $000001FC VOL: 0
-; 0000 004F     while(1);  // stay here
 ;PCODE: $000001FD VOL: 0
 ;PCODE: $000001FE VOL: 0
 ;PCODE: $000001FF VOL: 0
-; 0000 0050 }
-; 0000 0051 
-; 0000 0052 lcd_gotoxy(0, 1);
+; 0000 003A lcd_puts("Temp:");
 ;PCODE: $00000200 VOL: 0
 ;PCODE: $00000201 VOL: 0
 ;PCODE: $00000202 VOL: 0
+; 0000 003B lcd_gotoxy(0, 0);
 ;PCODE: $00000203 VOL: 0
 ;PCODE: $00000204 VOL: 0
-; 0000 0053 lcd_puts("Temp:");
 ;PCODE: $00000205 VOL: 0
 ;PCODE: $00000206 VOL: 0
+; 0000 003C lcd_puts("Pres:");
 ;PCODE: $00000207 VOL: 0
-; 0000 0054 lcd_gotoxy(0, 0);
 ;PCODE: $00000208 VOL: 0
 ;PCODE: $00000209 VOL: 0
+; 0000 003D 
+; 0000 003E // Read temperature (in hundredths C) and pressure (in Pa)
+; 0000 003F // Values from BMP280 sensor
+; 0000 0040 BMP280_readTemperature(&temperature);  // Reading temperature
 ;PCODE: $0000020A VOL: 0
 ;PCODE: $0000020B VOL: 0
-; 0000 0055 lcd_puts("Pres:");
+; 0000 0041 BMP280_readPressure(&pressure);        // Reading pressure
 ;PCODE: $0000020C VOL: 0
 ;PCODE: $0000020D VOL: 0
+; 0000 0042 
+; 0000 0043 // Print data on the LCD screen
+; 0000 0044 //Temperature
+; 0000 0045 lcd_gotoxy(5, 1);
 ;PCODE: $0000020E VOL: 0
-; 0000 0056 
-; 0000 0057 while (1)
 ;PCODE: $0000020F VOL: 0
-; 0000 0058       {
-; 0000 0059       // Place your code here
-; 0000 005A       // Read temperature (in hundredths C) and pressure (in Pa)
-; 0000 005B       // Values from BMP280 sensor
-; 0000 005C       BMP280_readTemperature(&temperature);  // Reading temperature
 ;PCODE: $00000210 VOL: 0
 ;PCODE: $00000211 VOL: 0
-; 0000 005D       BMP280_readPressure(&pressure);        // Reading pressure
+; 0000 0046 if(temperature < 0)
 ;PCODE: $00000212 VOL: 0
 ;PCODE: $00000213 VOL: 0
-; 0000 005E 
-; 0000 005F       // Print data on the LCD screen
-; 0000 0060       //Temperature
-; 0000 0061       lcd_gotoxy(5, 1);
 ;PCODE: $00000214 VOL: 0
+; 0000 0047 {
+; 0000 0048 lcd_putchar('-');
 ;PCODE: $00000215 VOL: 0
 ;PCODE: $00000216 VOL: 0
+; 0000 0049 temperature = abs(temperature);
 ;PCODE: $00000217 VOL: 0
-; 0000 0062       if(temperature < 0)
 ;PCODE: $00000218 VOL: 0
 ;PCODE: $00000219 VOL: 0
 ;PCODE: $0000021A VOL: 0
-; 0000 0063       {
-; 0000 0064         lcd_putchar('-');
+; 0000 004A }
+; 0000 004B else
 ;PCODE: $0000021B VOL: 0
 ;PCODE: $0000021C VOL: 0
-; 0000 0065         temperature = abs(temperature);
+; 0000 004C lcd_putchar(' ');
 ;PCODE: $0000021D VOL: 0
 ;PCODE: $0000021E VOL: 0
+; 0000 004D 
+; 0000 004E sprintf(Buffer_lcd, "%02u.%02u%cC", temperature / 100, temperature % 100, 223);
 ;PCODE: $0000021F VOL: 0
 ;PCODE: $00000220 VOL: 0
-; 0000 0066       }
-; 0000 0067       else
 ;PCODE: $00000221 VOL: 0
 ;PCODE: $00000222 VOL: 0
-; 0000 0068       lcd_putchar(' ');
 ;PCODE: $00000223 VOL: 0
 ;PCODE: $00000224 VOL: 0
-; 0000 0069 
-; 0000 006A       sprintf(Buffer_lcd, "%02u.%02u%cC", temperature / 100, temperature % 100, 223);
 ;PCODE: $00000225 VOL: 0
 ;PCODE: $00000226 VOL: 0
 ;PCODE: $00000227 VOL: 0
@@ -989,23 +961,23 @@
 ;PCODE: $00000230 VOL: 0
 ;PCODE: $00000231 VOL: 0
 ;PCODE: $00000232 VOL: 0
+; 0000 004F lcd_puts(Buffer_lcd);
 ;PCODE: $00000233 VOL: 0
 ;PCODE: $00000234 VOL: 0
+; 0000 0050 
+; 0000 0051 //Pressure
+; 0000 0052 lcd_gotoxy(6, 0);
 ;PCODE: $00000235 VOL: 0
 ;PCODE: $00000236 VOL: 0
 ;PCODE: $00000237 VOL: 0
 ;PCODE: $00000238 VOL: 0
-; 0000 006B 	  lcd_puts(Buffer_lcd);
+; 0000 0053 sprintf(Buffer_lcd, "%04u.%02uhPa", pressure/100, pressure % 100);
 ;PCODE: $00000239 VOL: 0
 ;PCODE: $0000023A VOL: 0
-; 0000 006C 
-; 0000 006D       //Pressure
-; 0000 006E       lcd_gotoxy(6, 0);
 ;PCODE: $0000023B VOL: 0
 ;PCODE: $0000023C VOL: 0
 ;PCODE: $0000023D VOL: 0
 ;PCODE: $0000023E VOL: 0
-; 0000 006F       sprintf(Buffer_lcd, "%04u.%02uhPa", pressure/100, pressure % 100);
 ;PCODE: $0000023F VOL: 0
 ;PCODE: $00000240 VOL: 0
 ;PCODE: $00000241 VOL: 0
@@ -1017,31 +989,73 @@
 ;PCODE: $00000247 VOL: 0
 ;PCODE: $00000248 VOL: 0
 ;PCODE: $00000249 VOL: 0
+; 0000 0054 lcd_puts(Buffer_lcd);
 ;PCODE: $0000024A VOL: 0
 ;PCODE: $0000024B VOL: 0
+; 0000 0055 
+; 0000 0056 delay_ms(2000);  // wait 2 seconds
 ;PCODE: $0000024C VOL: 0
 ;PCODE: $0000024D VOL: 0
+; 0000 0057 
+; 0000 0058 
+; 0000 0059 }
 ;PCODE: $0000024E VOL: 0
 ;PCODE: $0000024F VOL: 0
-; 0000 0070       lcd_puts(Buffer_lcd);
-;PCODE: $00000250 VOL: 0
-;PCODE: $00000251 VOL: 0
-; 0000 0071 
-; 0000 0072       delay_ms(2000);  // wait 2 seconds
-;PCODE: $00000252 VOL: 0
-;PCODE: $00000253 VOL: 0
-; 0000 0073 
-; 0000 0074       }
-;PCODE: $00000254 VOL: 0
-;PCODE: $00000255 VOL: 0
-; 0000 0075 }
-;PCODE: $00000256 VOL: 0
-;PCODE: $00000257 VOL: 0
-;PCODE: $00000258 VOL: 0
 
 	.DSEG
 _0xF:
 	.BYTE 0x1E
+;
+;void main(void)
+; 0000 005C {
+
+	.CSEG
+;PCODE: $00000250 VOL: 0
+; 0000 005D // Declare your local variables here
+; 0000 005E 
+; 0000 005F 
+; 0000 0060 // Bit-Banged I2C Bus initialization
+; 0000 0061 // I2C Port: PORTC
+; 0000 0062 // I2C SDA bit: 1
+; 0000 0063 // I2C SCL bit: 0
+; 0000 0064 // Bit Rate: 100 kHz
+; 0000 0065 // Note: I2C settings are specified in the
+; 0000 0066 // Project|Configure|C Compiler|Libraries|I2C menu.
+; 0000 0067 i2c_init();
+;PCODE: $00000251 VOL: 0
+; 0000 0068 
+; 0000 0069 // Alphanumeric LCD initialization
+; 0000 006A // Connections are specified in the
+; 0000 006B // Project|Configure|C Compiler|Libraries|Alphanumeric LCD menu:
+; 0000 006C // RS - PORTD Bit 0
+; 0000 006D // RD - PORTD Bit 1
+; 0000 006E // EN - PORTD Bit 2
+; 0000 006F // D4 - PORTD Bit 4
+; 0000 0070 // D5 - PORTD Bit 5
+; 0000 0071 // D6 - PORTD Bit 6
+; 0000 0072 // D7 - PORTD Bit 7
+; 0000 0073 // Characters/line: 16
+; 0000 0074 lcd_init(16);
+;PCODE: $00000252 VOL: 0
+;PCODE: $00000253 VOL: 0
+; 0000 0075 
+; 0000 0076 
+; 0000 0077 
+; 0000 0078 while (1)
+;PCODE: $00000254 VOL: 0
+; 0000 0079       {
+; 0000 007A       // Place your code here
+; 0000 007B       bmp280_init();
+;PCODE: $00000255 VOL: 0
+; 0000 007C 
+; 0000 007D 
+; 0000 007E       }
+;PCODE: $00000256 VOL: 0
+;PCODE: $00000257 VOL: 0
+; 0000 007F }
+;PCODE: $00000258 VOL: 0
+;PCODE: $00000259 VOL: 0
+;PCODE: $0000025A VOL: 0
 ;
 ;
 ;

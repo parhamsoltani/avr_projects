@@ -27,7 +27,7 @@ Active0=0
 EditorPanel0=0
 PageIndex0=0
 EditorPanel1=0
-TimeStamp1=1461322880
+TimeStamp1=1461346324
 PageIndex1=1
 OF2=BMP280_Lib.c
 Active2=0
@@ -132,8 +132,8 @@ WatchAVR8LAutoVariables=0
 UseEEPROMLocation0=1
 RebuildAll=0
 LinkageInformationPresent=1
-COFFileTimeStamp=1461322882
-Build=6
+COFFileTimeStamp=1461346351
+Build=7
 [DefinedSymbolsDebug]
 Count=0
 [Compiler]
@@ -235,7 +235,7 @@ UseEEPROMLocation0=1
 RebuildAll=1
 LinkageInformationPresent=0
 COFFileTimeStamp=-1
-Build=6
+Build=7
 [DefinedSymbols]
 Count=0
 [CompilerAdvanced]
@@ -354,8 +354,8 @@ L13=Enhanced function parameters passing: Yes
 L14=Automatic register allocation: Yes
 L15=Smart register allocation: Yes
 L16=
-L17=Build: 5
-L18=13609 line(s) compiled
+L17=Build: 6
+L18=13619 line(s) compiled
 L19=No errors
 L20=1 warning(s)
 L21=
@@ -375,54 +375,38 @@ L34=Heap size: 0 byte(s)
 L35=
 Lines=38
 L36=EEPROM usage: 0 byte(s), 0.0% of EEPROM
-L37=Program size: 2159 words (4318 bytes), 13.2% of FLASH
+L37=Program size: 2160 words (4320 bytes), 13.2% of FLASH
 L38=134 words (268 bytes), 5.8% reduced by Code Compression
 [BuildInfoAssembler]
 Lines=12
 L1=AVRASM: AVR macro assembler 2.1.30 (build 592 Nov  7 2008 12:38:17)
 L2=Copyright (C) 1995-2008 ATMEL Corporation
 L3=
-L4=E:\Projects\AVR Projects\BMP280\Debug\List\bmp280_i2c.asm(3678): No EEPROM data, deleting E:\Projects\AVR Projects\BMP280\Debug\Exe\bmp280_i2c.eep
+L4=E:\Projects\AVR Projects\BMP280\Debug\List\bmp280_i2c.asm(3693): No EEPROM data, deleting E:\Projects\AVR Projects\BMP280\Debug\Exe\bmp280_i2c.eep
 L5=
 L6=ATmega32 memory use summary [bytes]:
 L7=Segment   Begin    End      Code   Data   Used    Size   Use%
 L8=---------------------------------------------------------------
-L9=[.cseg] 0x000000 0x0010de   4192    126   4318   32768  13.2%
+L9=[.cseg] 0x000000 0x0010e0   4194    126   4320   32768  13.2%
 L10=[.dseg] 0x000060 0x0002c2      0     98     98    2048   4.8%
 L11=[.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 L12=
-[HeadersList]
-Files=1
-F1=E:\Projects\AVR Projects\BMP280\bmp280_i2c.c
-[Header1]
-Files=11
-F1=C:\cvavr\inc\mega32.h
-F2=C:\cvavr\inc\mega32_bits.h
-F3=C:\cvavr\inc\delay.h
-F4=C:\cvavr\inc\stdio.h
-F5=C:\cvavr\inc\io.h
-F6=C:\cvavr\inc\stdarg.h
-F7=C:\cvavr\inc\stdlib.h
-F8=C:\cvavr\inc\i2c.h
-F9=C:\cvavr\inc\alcd.h
-F10=BMP280_Lib.c
-F11=C:\cvavr\inc\stdint.h
 [Bookmarks0]
 Row=0
 Column=0
 ScrollPosX=0
 ScrollPosY=0
-TimeStamp=1461322886
+TimeStamp=1461346393
 [BookmarksFoldedCode]
 Files=2
 F1=bmp280_i2c.c
 F2=BMP280_Lib.c
 [Bookmarks1]
-TimeStamp=1461322880
-Row=7
-Column=35
+TimeStamp=1461346324
+Row=0
+Column=0
 ScrollPosX=0
-ScrollPosY=0
+ScrollPosY=97
 BK0=-1
 BK1=-1
 BK2=-1
@@ -433,8 +417,6 @@ BK6=-1
 BK7=-1
 BK8=-1
 BK9=-1
-[FoldedCode1]
-Blocks=0
 [Bookmarks2]
 TimeStamp=1461215543
 Row=185
@@ -451,5 +433,23 @@ BK6=-1
 BK7=-1
 BK8=-1
 BK9=-1
+[HeadersList]
+Files=1
+F1=E:\Projects\AVR Projects\BMP280\bmp280_i2c.c
+[Header1]
+Files=11
+F1=C:\cvavr\inc\mega32.h
+F2=C:\cvavr\inc\mega32_bits.h
+F3=C:\cvavr\inc\delay.h
+F4=C:\cvavr\inc\stdio.h
+F5=C:\cvavr\inc\io.h
+F6=C:\cvavr\inc\stdarg.h
+F7=C:\cvavr\inc\stdlib.h
+F8=C:\cvavr\inc\i2c.h
+F9=C:\cvavr\inc\alcd.h
+F10=BMP280_Lib.c
+F11=C:\cvavr\inc\stdint.h
+[FoldedCode1]
+Blocks=0
 [FoldedCode2]
 Blocks=0
