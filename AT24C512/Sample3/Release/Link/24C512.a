@@ -1,0 +1,243 @@
+;/*******************************************************
+;This program was created by the
+;CodeWizardAVR V3.14 Advanced
+;Automatic Program Generator
+;© Copyright 1998-2014 Pavel Haiduc, HP InfoTech s.r.l.
+;http://www.hpinfotech.com
+;
+;Project : Even numbers written on AT24C512 and read from it
+;Version :
+;Date    : 8/26/2023
+;Author  : Parham Soltani
+;Company :
+;Comments:
+;
+;
+;Chip type               : ATmega32
+;Program type            : Application
+;AVR Core Clock frequency: 8.000000 MHz
+;Memory model            : Small
+;External RAM size       : 0
+;Data Stack size         : 512
+;*******************************************************/
+;
+;
+;#include <mega32.h>
+;PCODE: $00000000 VOL: 0
+	#ifndef __SLEEP_DEFINED__
+;PCODE: $00000001 VOL: 0
+	#define __SLEEP_DEFINED__
+;PCODE: $00000002 VOL: 0
+	.EQU __se_bit=0x80
+;PCODE: $00000003 VOL: 0
+	.EQU __sm_mask=0x70
+;PCODE: $00000004 VOL: 0
+	.EQU __sm_powerdown=0x20
+;PCODE: $00000005 VOL: 0
+	.EQU __sm_powersave=0x30
+;PCODE: $00000006 VOL: 0
+	.EQU __sm_standby=0x60
+;PCODE: $00000007 VOL: 0
+	.EQU __sm_ext_standby=0x70
+;PCODE: $00000008 VOL: 0
+	.EQU __sm_adc_noise_red=0x10
+;PCODE: $00000009 VOL: 0
+	.SET power_ctrl_reg=mcucr
+;PCODE: $0000000A VOL: 0
+	#endif
+;PCODE: $0000000B VOL: 0
+;PCODE: $0000000C VOL: 0
+;#include <delay.h>
+;#asm
+;PCODE: $0000000D VOL: 0
+   .equ __lcd_port=0x18 ;PORTB
+;PCODE: $0000000E VOL: 0
+;PCODE: $0000000F VOL: 0
+; 0000 001D #endasm
+;#include <lcd.h>
+;#asm
+;PCODE: $00000010 VOL: 0
+   .equ __i2c_port=0x15 ;PORTC
+;PCODE: $00000011 VOL: 0
+   .equ __sda_bit=1
+;PCODE: $00000012 VOL: 0
+   .equ __scl_bit=0
+;PCODE: $00000013 VOL: 0
+;PCODE: $00000014 VOL: 0
+; 0000 0023 #endasm
+;#include <i2c.h>
+;#include <stdio.h>
+;#include <math.h>
+;#define write_address_bus  160
+;#define read_address_bus  161
+;
+;void write_eeprom(unsigned char data,unsigned int address);
+;unsigned char read_eeprom(unsigned int address);
+;
+;
+;void main(void)
+; 0000 002F {
+
+	.CSEG
+;PCODE: $00000015 VOL: 0
+; 0000 0030 	unsigned char Buffer_lcd[16];
+; 0000 0031 	int R,i;
+; 0000 0032 	i2c_init();
+;PCODE: $00000016 VOL: 0
+;	Buffer_lcd -> Y+0
+;	R -> R16,R17
+;	i -> R18,R19
+;PCODE: $00000017 VOL: 0
+; 0000 0033 	lcd_init(16);
+;PCODE: $00000018 VOL: 0
+;PCODE: $00000019 VOL: 0
+; 0000 0034 	for(i=0;i<100;i++)
+;PCODE: $0000001A VOL: 0
+;PCODE: $0000001B VOL: 0
+;PCODE: $0000001C VOL: 0
+;PCODE: $0000001D VOL: 0
+;PCODE: $0000001E VOL: 0
+;PCODE: $0000001F VOL: 0
+;PCODE: $00000020 VOL: 0
+;PCODE: $00000021 VOL: 0
+;PCODE: $00000022 VOL: 0
+; 0000 0035     write_eeprom(i*2,i);
+;PCODE: $00000023 VOL: 0
+;PCODE: $00000024 VOL: 0
+;PCODE: $00000025 VOL: 0
+;PCODE: $00000026 VOL: 0
+;PCODE: $00000027 VOL: 0
+;PCODE: $00000028 VOL: 0
+;PCODE: $00000029 VOL: 0
+;PCODE: $0000002A VOL: 0
+;PCODE: $0000002B VOL: 0
+;PCODE: $0000002C VOL: 0
+; 0000 0036 while (1)
+;PCODE: $0000002D VOL: 0
+; 0000 0037 	{
+; 0000 0038 	    for(i=0;i<100;i++)
+;PCODE: $0000002E VOL: 0
+;PCODE: $0000002F VOL: 0
+;PCODE: $00000030 VOL: 0
+;PCODE: $00000031 VOL: 0
+;PCODE: $00000032 VOL: 0
+;PCODE: $00000033 VOL: 0
+;PCODE: $00000034 VOL: 0
+;PCODE: $00000035 VOL: 0
+;PCODE: $00000036 VOL: 0
+; 0000 0039 	    {
+; 0000 003A 	        R=read_eeprom(i);
+;PCODE: $00000037 VOL: 0
+;PCODE: $00000038 VOL: 0
+;PCODE: $00000039 VOL: 0
+;PCODE: $0000003A VOL: 0
+; 0000 003B 	        lcd_clear();
+;PCODE: $0000003B VOL: 0
+; 0000 003C 	        sprintf(Buffer_lcd,"Read Data= %u",R);
+;PCODE: $0000003C VOL: 0
+;PCODE: $0000003D VOL: 0
+;PCODE: $0000003E VOL: 0
+;PCODE: $0000003F VOL: 0
+;PCODE: $00000040 VOL: 0
+;PCODE: $00000041 VOL: 0
+;PCODE: $00000042 VOL: 0
+;PCODE: $00000043 VOL: 0
+;PCODE: $00000044 VOL: 0
+;PCODE: $00000045 VOL: 0
+;PCODE: $00000046 VOL: 0
+;PCODE: $00000047 VOL: 0
+; 0000 003D 	        lcd_puts(Buffer_lcd);
+;PCODE: $00000048 VOL: 0
+;PCODE: $00000049 VOL: 0
+; 0000 003E 	        delay_ms(1000);
+;PCODE: $0000004A VOL: 0
+;PCODE: $0000004B VOL: 0
+; 0000 003F 	    }
+;PCODE: $0000004C VOL: 0
+;PCODE: $0000004D VOL: 0
+;PCODE: $0000004E VOL: 0
+;PCODE: $0000004F VOL: 0
+;PCODE: $00000050 VOL: 0
+; 0000 0040 	}
+;PCODE: $00000051 VOL: 0
+;PCODE: $00000052 VOL: 0
+; 0000 0041 }
+;PCODE: $00000053 VOL: 0
+;PCODE: $00000054 VOL: 0
+;PCODE: $00000055 VOL: 0
+;PCODE: $00000056 VOL: 0
+;
+;void write_eeprom(unsigned char data,unsigned int address)
+; 0000 0044 {
+;PCODE: $00000057 VOL: 0
+;PCODE: $00000058 VOL: 0
+; 0000 0045    i2c_start();
+;PCODE: $00000059 VOL: 0
+;	data -> Y+2
+;	address -> Y+0
+;PCODE: $0000005A VOL: 0
+; 0000 0046    i2c_write(write_address_bus);
+;PCODE: $0000005B VOL: 0
+;PCODE: $0000005C VOL: 0
+; 0000 0047    i2c_write(0x00);             //high byte address
+;PCODE: $0000005D VOL: 0
+;PCODE: $0000005E VOL: 0
+; 0000 0048    i2c_write(address);          //low byte address
+;PCODE: $0000005F VOL: 0
+;PCODE: $00000060 VOL: 0
+; 0000 0049    i2c_write(data);
+;PCODE: $00000061 VOL: 0
+;PCODE: $00000062 VOL: 0
+; 0000 004A    i2c_stop();
+;PCODE: $00000063 VOL: 0
+; 0000 004B    delay_ms(10);
+;PCODE: $00000064 VOL: 0
+;PCODE: $00000065 VOL: 0
+;PCODE: $00000066 VOL: 0
+; 0000 004C 
+; 0000 004D }
+;PCODE: $00000067 VOL: 0
+;PCODE: $00000068 VOL: 0
+;PCODE: $00000069 VOL: 0
+;
+;unsigned char read_eeprom(unsigned int address)
+; 0000 0050 {
+;PCODE: $0000006A VOL: 0
+;PCODE: $0000006B VOL: 0
+; 0000 0051    unsigned char data_read;
+; 0000 0052    i2c_start();
+;PCODE: $0000006C VOL: 0
+;PCODE: $0000006D VOL: 0
+;	address -> Y+1
+;	data_read -> R17
+;PCODE: $0000006E VOL: 0
+; 0000 0053    i2c_write(write_address_bus);
+;PCODE: $0000006F VOL: 0
+;PCODE: $00000070 VOL: 0
+; 0000 0054    i2c_write(0x00);                   //high byte address
+;PCODE: $00000071 VOL: 0
+;PCODE: $00000072 VOL: 0
+; 0000 0055    i2c_write(address);                //low byte address
+;PCODE: $00000073 VOL: 0
+;PCODE: $00000074 VOL: 0
+; 0000 0056    i2c_start();
+;PCODE: $00000075 VOL: 0
+; 0000 0057    i2c_write(read_address_bus);
+;PCODE: $00000076 VOL: 0
+;PCODE: $00000077 VOL: 0
+; 0000 0058    data_read=i2c_read(0);
+;PCODE: $00000078 VOL: 0
+;PCODE: $00000079 VOL: 0
+;PCODE: $0000007A VOL: 0
+; 0000 0059    i2c_stop();
+;PCODE: $0000007B VOL: 0
+; 0000 005A    return data_read;
+;PCODE: $0000007C VOL: 0
+;PCODE: $0000007D VOL: 0
+;PCODE: $0000007E VOL: 0
+;PCODE: $0000007F VOL: 0
+;PCODE: $00000080 VOL: 0
+; 0000 005B 
+; 0000 005C }
+;PCODE: $00000081 VOL: 0
+;

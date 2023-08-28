@@ -1,0 +1,9 @@
+VERSION:3 SOURCE_TIMESTAMP:571C6B8F
+NODE:I LEVEL:0 LINE:24 "C:\cvavr\inc\mega32.h"
+NODE:I LEVEL:0 LINE:27 "C:\cvavr\inc\i2c.h"
+NODE:I LEVEL:0 LINE:29 "C:\cvavr\inc\delay.h"
+NODE:I LEVEL:0 LINE:30 "C:\cvavr\inc\stdio.h"
+NODE:M LEVEL:0 LINE:32 "EEPROM_BUS_ADDRESS"
+NODE:F LEVEL:0 LINE:37 "eeprom_read(unsigned char address)"
+NODE:F LEVEL:0 LINE:50 "eeprom_write(unsigned char address,unsigned char data)"
+NODE:F LEVEL:0 LINE:60 "main(void)"

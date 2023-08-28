@@ -1,0 +1,10 @@
+VERSION:3 SOURCE_TIMESTAMP:571C6BB2
+NODE:I LEVEL:0 LINE:24 "C:\cvavr\inc\mega32.h"
+NODE:I LEVEL:0 LINE:26 "C:\cvavr\inc\delay.h"
+NODE:I LEVEL:0 LINE:27 "C:\cvavr\inc\at24c512.h"
+NODE:I LEVEL:0 LINE:28 "C:\cvavr\inc\twi.h"
+NODE:I LEVEL:0 LINE:30 "C:\cvavr\inc\i2c.h"
+NODE:V LEVEL:0 LINE:34 "write_buff -> RAM:????"
+NODE:V LEVEL:0 LINE:35 "read_buff -> RAM:????"
+NODE:V LEVEL:0 LINE:36 "i -> R5"
+NODE:F LEVEL:0 LINE:38 "main(void)"
