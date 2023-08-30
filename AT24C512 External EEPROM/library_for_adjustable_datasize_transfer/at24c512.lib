@@ -1,0 +1,30 @@
+#include <delay.h>
+#include <twi.h>
+
+unsigned char at24c512_buff[130];
+
+void at24c512_write(unsigned char device_addr, 
+                    unsigned int data_addr, 
+                    unsigned char *buffer, 
+                    unsigned char count)
+{
+    unsigned char i;
+    device_addr += 0x50;
+    at24c512_buff[0] = (data_addr&0xFF00)>>8;
+    at24c512_buff[1] = (data_addr&0x00FF);
+       
+    for(i=0;i<count;i++) at24c512_buff[i+2] = buffer[i];    
+    twi_master_trans(device_addr, at24c512_buff, count+2, 0, 0);
+}
+
+void at24c512_read(unsigned char device_addr, 
+                    unsigned int data_addr, 
+                    unsigned char *buffer, 
+                    unsigned char count)
+{
+    device_addr += 0x50;
+    at24c512_buff[0] = (data_addr&0xFF00)>>8;
+    at24c512_buff[1] = (data_addr&0x00FF);
+    
+    twi_master_trans(device_addr, at24c512_buff, 2, buffer, count);
+}
