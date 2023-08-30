@@ -2,10 +2,10 @@
 This program was created by the
 CodeWizardAVR V3.14 Advanced
 Automatic Program Generator
-© Copyright 1998-2014 Pavel Haiduc, HP InfoTech s.r.l.
+Â© Copyright 1998-2014 Pavel Haiduc, HP InfoTech s.r.l.
 http://www.hpinfotech.com
 
-Project : AT24C512 sample
+Project : AT24C512 with TWI
 Version : 
 Date    : 8/28/2023
 Author  : Parham Soltani
