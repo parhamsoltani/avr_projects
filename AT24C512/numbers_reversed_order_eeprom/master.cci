@@ -1,0 +1,12 @@
+VERSION:3 SOURCE_TIMESTAMP:571E5CDB
+NODE:I LEVEL:0 LINE:24 "C:\cvavr\inc\mega32.h"
+NODE:I LEVEL:0 LINE:25 "C:\cvavr\inc\delay.h"
+NODE:I LEVEL:0 LINE:26 "C:\cvavr\inc\stdio.h"
+NODE:I LEVEL:0 LINE:30 "C:\cvavr\inc\i2c.h"
+NODE:I LEVEL:0 LINE:33 "C:\cvavr\inc\alcd.h"
+NODE:M LEVEL:0 LINE:35 "write_address_bus"
+NODE:M LEVEL:0 LINE:36 "read_address_bus"
+NODE:V LEVEL:0 LINE:43 "buffer -> RAM:????"
+NODE:F LEVEL:0 LINE:45 "main(void)"
+NODE:F LEVEL:0 LINE:98 "write_eeprom(unsigned char data,unsigned int address)"
+NODE:F LEVEL:0 LINE:110 "read_eeprom(unsigned int address)"
