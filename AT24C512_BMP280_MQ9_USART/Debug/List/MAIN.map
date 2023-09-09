@@ -1,0 +1,60 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+adc_T                                                                             0x0260       4
+adc_P                                                                             0x0264       4
+t_fine                                                                            0x0268       4
+BMP280_calib                                                                      0x026C      24
+lcd                                                                               0x0284      16
+temperature                                                                       0x0294       4
+pressure                                                                          0x0298       4
+i                                                                                 0x029C       4
+_seed                                                                             0x02A0       4
+_base_y                                                                           0x02A4       4
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+MQ9                                                                               R4,R5        2
+_lcd_x                                                                            R7           1
+_lcd_y                                                                            R6           1
+_lcd_maxx                                                                         R9           1
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+BMP280_Write                                                                      0x0007D      9
+BMP280_Read8                                                                      0x00086     16
+BMP280_Read16                                                                     0x00096     26
+BMP280_Configure                                                                  0x000B0     15
+BMP280_begin                                                                      0x000BF    101
+BMP280_Update                                                                     0x00124     49
+BMP280_readTemperature                                                            0x00155    112
+BMP280_readPressure                                                               0x001C5    338
+read_adc                                                                          0x00317     13
+adc_init                                                                          0x00324     57
+usart_init                                                                        0x0035D     11
+main                                                                              0x00368    139
+putchar                                                                           0x003F3      7
+puts                                                                              0x003FA     15
+putsf                                                                             0x00409     21
+put_buff_G100                                                                     0x0041E     58
+_ftoe_G100                                                                        0x00458    204
+_print_G100                                                                       0x00524    538
+sprintf                                                                           0x0073E     52
+abs                                                                               0x00772     10
+ftoa                                                                              0x0077C    198
+_lcd_write_nibble_G102                                                            0x00842     20
+_lcd_write_data                                                                   0x00856     12
+lcd_gotoxy                                                                        0x00862     13
+lcd_clear                                                                         0x0086F     12
+lcd_init                                                                          0x0087B     46
+strcpyf                                                                           0x008A9     13
+strlen                                                                            0x008B6     12
+strlenf                                                                           0x008C2     13
+ftrunc                                                                            0x008CF     49
+floor                                                                             0x00900     19
